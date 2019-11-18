@@ -6,7 +6,7 @@ import { blue, green, grey, red, yellow } from '@material-ui/core/colors';
 import LockIcon from '@material-ui/icons/LockOpenOutlined';
 
 const numTiles = 12;
-const scoring = [1, 2, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
+const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 const colors = { blue, green, red, yellow };
 
 const useStyles = (color) => makeStyles((theme) => ({
@@ -38,9 +38,10 @@ const useStyles = (color) => makeStyles((theme) => ({
   },
   x: {
     fontWeight: 'bold',
+    color: 'black',
   },
   lock: {
-    fontSize: '2rem',
+    fontSize: '3vw',
     marginBottom: -4,
     transform: 'rotate(45deg)',
   },
@@ -75,24 +76,31 @@ const styles = (theme) => ({
     borderRadius: 8,
     flexGrow: 1,
     fontSize: '3vw',
-    height: 48,
     padding: 8,
+    textAlign: 'center',
   },
   blockRed: {
     borderColor: red[700],
     backgroundColor: red[100],
+    color: red[100],
   },
   blockYellow: {
     borderColor: yellow[700],
     backgroundColor: yellow[100],
+    color: yellow[100],
   },
   blockGreen: {
     borderColor: green[700],
     backgroundColor: green[100],
+    color: green[100],
   },
   blockBlue: {
     borderColor: blue[700],
     backgroundColor: blue[100],
+    color: blue[100],
+  },
+  blockWhite: {
+    color: 'white',
   },
   paper: {
     padding: theme.spacing(2),
@@ -101,35 +109,43 @@ const styles = (theme) => ({
   row: {
     marginBottom: theme.spacing(2),
   },
+  scoreContainer: {
+    flexWrap: 'nowrap',
+  },
   score: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
+    fontSize: '1.5vw',
     paddingLeft: 4,
     paddingRight: 4,
   },
   scoreTop: {
     borderBottom: `1px solid ${grey[500]}`,
-    paddingLeft: 4,
-    paddingRight: 4,
     textAlign: 'center',
+    padding: 4,
   },
   scoreBottom: {
-    paddingLeft: 4,
-    paddingRight: 4,
+    padding: 4,
     textAlign: 'center',
   },
   strike: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
+    cursor: 'pointer',
     fontWeight: 'bold',
     padding: '7px',
+  },
+  strikeContainer: {
+    minWidth: 128,
   },
   strikeEmpty: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
+    cursor: 'pointer',
     padding: '18px 12px',
   },
   strikesLabel: {
+    fontSize: '2vw',
     marginBottom: theme.spacing(),
     textAlign: 'center',
   },
@@ -153,29 +169,36 @@ class QuixxScoreCard extends Component {
     this.setState({ [name]: value });
   }
 
-  handleClick = (list, index) => {
-    const row = [...this.state[list]];
+  handleClick = (color, index) => {
+    const row = [...this.state[color]];
+
+    // set the X and calculate new score
     row[index] = !row[index];
+    const numXs = row.filter(value => value).length;
+    const score = color === 'strikes' ? numXs * 5 : scoring[numXs];
     
-    this.setState({ [list]: row });
+    this.setState({ 
+      [color]: row,
+      [`${color}Score`]: score,
+    });
   }
 
   render() {
     const { classes } = this.props;
     const { 
       blue,
-      blueScore,
+      blueScore = 0,
       green,
-      greenScore,
+      greenScore = 0,
       red,
-      redScore,
+      redScore = 0,
       yellow,
-      yellowScore,
+      yellowScore = 0,
       strikes,
-      strikeScore,
+      strikesScore = 0,
     } = this.state;
 
-    const totalScore = Number(redScore) + Number(yellowScore) + Number(greenScore) + Number(blueScore) - Number(strikeScore);
+    const totalScore = redScore + yellowScore + greenScore + blueScore - strikesScore;
 
     return (
       <Paper className={classes.paper}>
@@ -183,22 +206,28 @@ class QuixxScoreCard extends Component {
         <NumberRow color={'yellow'} row={yellow} onClick={this.handleClick} />
         <NumberRow color={'green'} row={green} reverse onClick={this.handleClick} />
         <NumberRow color={'blue'} row={blue} reverse onClick={this.handleClick} />
-        <Grid container spacing={2} justify='space-between' alignItems='center' className={classes.row}>
-          <Grid item xs={10}>
-            <Grid container spacing={1} justify='space-around'>
-              <Grid item className={classes.score}>
-                <div className={classes.scoreTop}>X</div>
-                <div className={classes.scoreBottom}>points</div>
+        <Grid container spacing={1} justify='space-between' alignItems='center' className={classes.row}>
+          <Grid item>
+            <Grid container spacing={1} justify='space-between' className={classes.scoreContainer}>
+              <Grid item >
+                <div className={classes.score}>
+                  <div className={classes.scoreTop}>X</div>
+                  <div className={classes.scoreBottom}>points</div>
+                </div>
               </Grid>
-              {scoring.map((score, i) => (
-                <Grid item key={score} className={classes.score}>
-                  <div className={classes.scoreTop}>{i + 1}x</div>
-                  <div className={classes.scoreBottom}>{score}</div>
-                </Grid>
-              ))}
+              {scoring
+                .filter(score => score > 0) // skip the first one
+                .map((score, i) => (
+                  <Grid item key={score}>
+                    <div className={classes.score}>
+                      <div className={classes.scoreTop}>{i + 1}x</div>
+                      <div className={classes.scoreBottom}>{score}</div>
+                    </div>
+                  </Grid>
+                ))}
             </Grid>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item className={classes.strikeContainer}>
             <div className={classes.strikesLabel}>
               <span className={classes.strikesLabelX}>X</span> = -5
             </div>
@@ -213,27 +242,27 @@ class QuixxScoreCard extends Component {
         <Grid container spacing={2} justify='space-between' alignItems='center' className={classes.scoreRow}>
           <Grid item>totals</Grid>
           <Grid item className={clsx(classes.block, classes.blockRed)}>
-            {/* <input name='redScore' onChange={this.handleChange} /> */}
+            {redScore}
           </Grid>
           <Grid item>+</Grid>
           <Grid item className={clsx(classes.block, classes.blockYellow)}>
-            {/* <input name='yellowScore' onChange={this.handleChange} /> */}
+            {yellowScore}
           </Grid>
           <Grid item>+</Grid>
           <Grid item className={clsx(classes.block, classes.blockGreen)}>
-            {/* <input name='greenScore' onChange={this.handleChange} /> */}
+            {greenScore}
           </Grid>
           <Grid item>+</Grid>
           <Grid item className={clsx(classes.block, classes.blockBlue)}>
-            {/* <input name='blueScore' onChange={this.handleChange} /> */}
+            {blueScore}
           </Grid>
           <Grid item>-</Grid>
-          <Grid item className={classes.block}>
-            {/* <input name='strikeScore' onChange={this.handleChange} /> */}
+          <Grid item className={clsx(classes.block, classes.blockWhite)}>
+            {strikesScore}
           </Grid>
           <Grid item>=</Grid>
-          <Grid item className={classes.block}>
-            {totalScore || null}
+          <Grid item className={clsx(classes.block, classes.blockWhite)}>
+            {totalScore}
           </Grid>
         </Grid>
       </Paper>
