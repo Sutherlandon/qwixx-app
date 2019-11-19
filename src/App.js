@@ -74,7 +74,9 @@ const styles = (theme) => ({
   block: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
+    cursor: 'pointer',
     flexGrow: 1,
+    flexShrink: 0,
     fontSize: '3vw',
     padding: 8,
     textAlign: 'center',
@@ -102,6 +104,9 @@ const styles = (theme) => ({
   blockWhite: {
     color: 'white',
   },
+  blackText: {
+    color: 'black',
+  },
   paper: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),
@@ -112,10 +117,13 @@ const styles = (theme) => ({
   scoreContainer: {
     flexWrap: 'nowrap',
   },
+  scoreRow: {
+    fontSize: '2vw',
+  },
   score: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
-    fontSize: '1.5vw',
+    fontSize: '2vw',
     paddingLeft: 4,
     paddingRight: 4,
   },
@@ -133,7 +141,8 @@ const styles = (theme) => ({
     borderRadius: 8,
     cursor: 'pointer',
     fontWeight: 'bold',
-    padding: '7px',
+    fontSize: '2vw',
+    padding: '8px',
   },
   strikeContainer: {
     minWidth: 128,
@@ -141,8 +150,11 @@ const styles = (theme) => ({
   strikeEmpty: {
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
+    color: 'White',
     cursor: 'pointer',
-    padding: '18px 12px',
+    fontWeight: 'bold',
+    fontSize: '2vw',
+    padding: '8px',
   },
   strikesLabel: {
     fontSize: '2vw',
@@ -188,14 +200,19 @@ class QuixxScoreCard extends Component {
     const { 
       blue,
       blueScore = 0,
+      showBlue, 
       green,
       greenScore = 0,
+      showGreen, 
       red,
       redScore = 0,
+      showRed, 
       yellow,
       yellowScore = 0,
+      showYellow,
       strikes,
       strikesScore = 0,
+      showStrikes,
     } = this.state;
 
     const totalScore = redScore + yellowScore + greenScore + blueScore - strikesScore;
@@ -232,36 +249,82 @@ class QuixxScoreCard extends Component {
               <span className={classes.strikesLabelX}>X</span> = -5
             </div>
             <Grid container justify='space-around'>
-              {strikes.map((strike, i) => strike
-                ? <div key={i} onClick={() => this.handleClick('strikes', i)} className={classes.strike}>X</div>
-                : <div key={i} onClick={() => this.handleClick('strikes', i)} className={classes.strikeEmpty}></div>
-               )}
+              {strikes.map((strike, i) => (
+                <div 
+                  key={i}
+                  onClick={() => this.handleClick('strikes', i)}
+                  className={strike ? classes.strike : classes.strikeEmpty}
+                >
+                  X
+                </div>
+               ))}
             </Grid>
           </Grid>
         </Grid>
         <Grid container spacing={2} justify='space-between' alignItems='center' className={classes.scoreRow}>
           <Grid item>totals</Grid>
-          <Grid item className={clsx(classes.block, classes.blockRed)}>
+          <Grid item
+            className={clsx(
+              classes.block,
+              classes.blockRed,
+              showRed && classes.blackText
+            )}
+            onClick={() => this.setState({ showRed: !this.state.showRed })}
+          >
             {redScore}
           </Grid>
           <Grid item>+</Grid>
-          <Grid item className={clsx(classes.block, classes.blockYellow)}>
+          <Grid item
+            className={clsx(
+              classes.block,
+              classes.blockYellow,
+              showYellow && classes.blackText
+            )}
+            onClick={() => this.setState({ showYellow: !this.state.showYellow })}
+          >
             {yellowScore}
           </Grid>
           <Grid item>+</Grid>
-          <Grid item className={clsx(classes.block, classes.blockGreen)}>
+          <Grid item
+            className={clsx(
+              classes.block,
+              classes.blockGreen,
+              showGreen && classes.blackText
+            )}
+            onClick={() => this.setState({ showGreen: !this.state.showGreen })}
+          > 
             {greenScore}
           </Grid>
           <Grid item>+</Grid>
-          <Grid item className={clsx(classes.block, classes.blockBlue)}>
+          <Grid item
+            className={clsx(
+              classes.block,
+              classes.blockBlue,
+              showBlue && classes.blackText,
+            )}
+            onClick={() => this.setState({ showBlue: !this.state.showBlue })}
+           >
             {blueScore}
           </Grid>
           <Grid item>-</Grid>
-          <Grid item className={clsx(classes.block, classes.blockWhite)}>
+          <Grid item 
+            className={clsx(
+              classes.block,
+              classes.blockWhite,
+              showStrikes && classes.blackText,
+            )}
+            onClick={() => this.setState({ showStrikes: !this.state.showStrikes })}
+          >
             {strikesScore}
           </Grid>
           <Grid item>=</Grid>
-          <Grid item className={clsx(classes.block, classes.blockWhite)}>
+          <Grid item 
+            className={clsx(
+              classes.block,
+              classes.blockWhite,
+              showRed && showYellow && showGreen && showBlue && showStrikes && classes.blackText
+            )}
+          >
             {totalScore}
           </Grid>
         </Grid>
