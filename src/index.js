@@ -5,7 +5,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  spacing: (factor = 1) => `${0.25 * factor}em`,
+});
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
