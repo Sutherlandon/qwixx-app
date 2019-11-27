@@ -69,6 +69,7 @@ function ScoreRow(props) {
     showRed, 
     showYellow,
     showStrikes,
+    showFinal,
     revealScore,
   } = props;
 
@@ -138,8 +139,9 @@ function ScoreRow(props) {
         className={clsx(
           classes.block,
           classes.blockWhite,
-          showRed && showYellow && showGreen && showBlue && showStrikes && classes.blackText
+          showFinal && classes.blackText
         )}
+        onClick={() => revealScore('showFinal')}
       >
         {totalScore}
       </Grid>

@@ -11,7 +11,7 @@ const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 const styles = (theme) => ({
   paper: {
     padding: theme.spacing(2),
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(4),
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
     },
@@ -21,6 +21,19 @@ const styles = (theme) => ({
     [theme.breakpoints.up('xl')]: {
       fontSize: '4vw',
     },
+  },
+  blackBox: {
+    border: '1px solid black',
+    borderRadius: 20,
+    fontSize: '2vw',
+    marginRight: theme.spacing(5),
+    marginTop: theme.spacing(),
+    paddingBottom: theme.spacing(72),
+    position: 'fixed',
+    right: 0,
+    textAlign: 'center',
+    top: 0,
+    width: '15.85%',
   },
 });
 
@@ -57,23 +70,27 @@ class QuixxScoreCard extends Component {
     const { 
       blue,
       blueScore = 0,
-      showBlue, 
       green,
       greenScore = 0,
-      showGreen, 
       red,
       redScore = 0,
-      showRed, 
-      yellow,
-      yellowScore = 0,
-      showYellow,
       strikes,
       strikesScore = 0,
+      yellow,
+      yellowScore = 0,
+      showBlue, 
+      showGreen, 
+      showRed, 
       showStrikes,
+      showYellow,
+      showFinal,
     } = this.state;
 
     return (
       <Paper className={classes.paper}>
+        <div className={classes.blackBox}>
+          At least 5 X's
+        </div>
         <NumberRow
           color={'red'}
           row={red}
@@ -107,6 +124,7 @@ class QuixxScoreCard extends Component {
           showRed={showRed}
           showStrikes={showStrikes}
           showYellow={showYellow}
+          showFinal={showFinal}
           greenScore={greenScore}
           blueScore={blueScore}
           redScore={redScore}
