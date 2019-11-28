@@ -2,62 +2,62 @@ import React from 'react';
 import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { blue, green, grey, red, yellow } from '@material-ui/core/colors';
 
-const useStyles = makeStyles((theme) => ({
-  block: {
-    backgroundColor: 'white',
-    border: `2px solid ${grey[500]}`,
-    borderRadius: theme.spacing(2),
-    cursor: 'pointer',
-    flexGrow: 1,
-    flexShrink: 0,
-    fontSize: '3vw',
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    width: '12%'
-  },
-  blockRed: {
-    borderColor: red[700],
-    backgroundColor: red[100],
-    color: red[100],
-  },
-  blockYellow: {
-    borderColor: yellow[700],
-    backgroundColor: yellow[100],
-    color: yellow[100],
-  },
-  blockGreen: {
-    borderColor: green[700],
-    backgroundColor: green[100],
-    color: green[100],
-  },
-  blockBlue: {
-    borderColor: blue[700],
-    backgroundColor: blue[100],
-    color: blue[100],
-  },
-  blockWhite: {
-    color: 'white',
-  },
-  blackText: {
-    color: 'black',
-  },
-  mathSymbol: {
-    fontSize: '3vw',
-    textAlign: 'center',
-    width: '4%'
-  },
-  row: {
-    backgroundColor: grey[400],
-  },
-  totals: {
-    padding: theme.spacing(),
-    paddingLeft: 0,
-    width: '7.5%',
-    fontSize: '2vw',
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  const { blue, green, grey, red, yellow } = theme.palette;
+  return ({
+    block: {
+      backgroundColor: 'white',
+      border: `2px solid ${grey.main}`,
+      borderRadius: theme.spacing(2),
+      cursor: 'pointer',
+      flexGrow: 1,
+      flexShrink: 0,
+      fontSize: '3vw',
+      padding: theme.spacing(1),
+      textAlign: 'center',
+      width: '12%'
+    },
+    blockRed: {
+      borderColor: red.main,
+      backgroundColor: red.light,
+      color: red.light,
+    },
+    blockYellow: {
+      borderColor: yellow.main,
+      backgroundColor: yellow.light,
+      color: yellow.light,
+    },
+    blockGreen: {
+      borderColor: green.main,
+      backgroundColor: green.light,
+      color: green.light,
+    },
+    blockBlue: {
+      borderColor: blue.main,
+      backgroundColor: blue.light,
+      color: blue.light,
+    },
+    blockWhite: {
+      color: 'white',
+    },
+    blackText: {
+      color: 'black',
+    },
+    mathSymbol: {
+      fontSize: '3vw',
+      textAlign: 'center',
+      width: '4%'
+    },
+    totals: {
+      padding: theme.spacing(),
+      paddingLeft: 0,
+      width: '7.5%',
+      fontSize: '2vw',
+    },
+  });
+});
+
 
 function ScoreRow(props) {
   const classes = useStyles();

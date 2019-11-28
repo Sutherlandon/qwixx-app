@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import { grey } from '@material-ui/core/colors';
 
 import ColorRows from './components/ColorRows';
 import ScoreRow from './components/ScoreRow';
@@ -11,9 +10,8 @@ const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
   paper: {
-    backgroundColor: grey[200],
+    backgroundColor: theme.palette.grey.light,
     padding: theme.spacing(2),
-    marginTop: theme.spacing(4),
     paddingTop: theme.spacing(4),
 
     [theme.breakpoints.up('sm')]: {
@@ -50,7 +48,15 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(),
     borderBottomRightRadius: theme.spacing(4),
     borderBottomLeftRadius: theme.spacing(4),
-  }
+  },
+  rules: {
+    fontSize: '1.6vw',
+    paddingRight: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
+    paddingTop: 0 ,
+    textAlign: 'right',
+  },
 });
 
 class QuixxScoreCard extends Component {
@@ -63,8 +69,10 @@ class QuixxScoreCard extends Component {
   }
 
   componentDidMount() {
-    window.onbeforeunload = (e) => {
-      return "Are you sure you want to reset the card?";
+    if (process.env.NODE_ENV === 'production') {
+      window.onbeforeunload = (e) => {
+        return "Are you sure you want to reset the card?";
+      }
     }
   }
 
@@ -105,30 +113,35 @@ class QuixxScoreCard extends Component {
     } = this.state;
 
     return (
-      <Paper className={classes.paper}>
-        <div className={classes.fiveXTop}>At least 5 X's</div>
-        <ColorRows {...this.state} onClick={this.handleClick} />
-        <div className={classes.fiveXBottom}></div>
-        <StrikesRow
-          scoring={scoring}
-          strikes={strikes}
-          onClick={(i) => this.handleClick('strikes', i)}
-        />
-        <ScoreRow
-          showBlue={showBlue}
-          showGreen={showGreen}
-          showRed={showRed}
-          showStrikes={showStrikes}
-          showYellow={showYellow}
-          showFinal={showFinal}
-          greenScore={greenScore}
-          blueScore={blueScore}
-          redScore={redScore}
-          strikesScore={strikesScore}
-          yellowScore={yellowScore}
-          revealScore={(score) => this.setState({ [score]: !this.state[score] })}
-        />
-      </Paper>
+      <Fragment>
+        <div className={classes.rules}>
+          <a href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'>Rules of Play</a>
+        </div>
+        <Paper className={classes.paper}>
+          <div className={classes.fiveXTop}>At least 5 X's</div>
+          <ColorRows {...this.state} onClick={this.handleClick} />
+          <div className={classes.fiveXBottom}></div>
+          <StrikesRow
+            scoring={scoring}
+            strikes={strikes}
+            onClick={(i) => this.handleClick('strikes', i)}
+          />
+          <ScoreRow
+            showBlue={showBlue}
+            showGreen={showGreen}
+            showRed={showRed}
+            showStrikes={showStrikes}
+            showYellow={showYellow}
+            showFinal={showFinal}
+            greenScore={greenScore}
+            blueScore={blueScore}
+            redScore={redScore}
+            strikesScore={strikesScore}
+            yellowScore={yellowScore}
+            revealScore={(score) => this.setState({ [score]: !this.state[score] })}
+          />
+        </Paper>
+      </Fragment>
     );
   }
 }

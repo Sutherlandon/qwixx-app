@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -13,14 +12,14 @@ const useStyles = makeStyles((theme) => ({
   },
   score: {
     backgroundColor: 'white',
-    border: `2px solid ${grey[500]}`,
+    border: `2px solid ${theme.palette.grey.main}`,
     borderRadius: theme.spacing(2),
     fontSize:'1.5vw',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
   },
   scoreTop: {
-    borderBottom: `1px solid ${grey[500]}`,
+    borderBottom: `1px solid ${theme.palette.grey.main}`,
     textAlign: 'center',
     padding: theme.spacing(),
   },
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   strike: {
     backgroundColor: 'white',
-    border: `2px solid ${grey[500]}`,
+    border: `2px solid ${theme.palette.grey.main}`,
     borderRadius: theme.spacing(),
     cursor: 'pointer',
     fontWeight: 'bold',

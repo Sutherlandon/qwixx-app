@@ -3,20 +3,17 @@ import clsx from 'clsx';
 import LockIcon from '@material-ui/icons/LockOpenOutlined';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { blue, green, red, yellow } from '@material-ui/core/colors';
-
-const colors = { blue, green, red, yellow };
 
 const useStyles = (color, lockSection) => makeStyles((theme) => ({
   row: {
-    backgroundColor: color[700],
+    backgroundColor: theme.palette[color].main,
     borderRadius: theme.spacing(),
     marginBottom: theme.spacing(2),
     padding: theme.spacing(),
   },
   number: {
-    backgroundColor: color[100],
-    color: color[700],
+    backgroundColor: theme.palette[color].light,
+    color: theme.palette[color].main,
     cursor: 'pointer',
     padding: theme.spacing(),
     paddingTop: theme.spacing(2),
@@ -51,7 +48,7 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
 }));
 
 function FreeSection({ color, onClick, reverse, row }) {
-  const classes = useStyles(colors[color])();
+  const classes = useStyles(color)();
 
   return (
     <div className={classes.row}>
@@ -88,7 +85,7 @@ function FreeSection({ color, onClick, reverse, row }) {
 }
 
 function LockSection({ color, onClick, reverse, row }) {
-  const classes = useStyles(colors[color], true)();
+  const classes = useStyles(color, true)();
 
   return (
     <div className={classes.row}>

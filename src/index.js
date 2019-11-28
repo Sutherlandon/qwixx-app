@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-const theme = createMuiTheme({
-  spacing: (factor = 1) => `${0.25 * factor}em`,
-});
+import App from './App';
+import Theme from './Theme';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
+  <ThemeProvider theme={Theme}>
     <App />
   </ThemeProvider>
 , document.getElementById('root'));
