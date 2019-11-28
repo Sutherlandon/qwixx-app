@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
+import { grey } from '@material-ui/core/colors';
 
 import NumberRow from './components/NumberRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
+import ColorRows from './components/ColorRows';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
   paper: {
+    backgroundColor: grey[200],
     padding: theme.spacing(2),
     marginTop: theme.spacing(4),
+    maxWidth: 1000,
+    paddingTop: theme.spacing(8),
+
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
     },
@@ -23,18 +29,32 @@ const styles = (theme) => ({
     },
   },
   blackBox: {
-    border: '1px solid black',
-    borderRadius: 20,
-    fontSize: '2vw',
-    marginRight: theme.spacing(5),
-    marginTop: theme.spacing(),
-    paddingBottom: theme.spacing(72),
-    position: 'fixed',
-    right: 0,
-    textAlign: 'center',
-    top: 0,
-    width: '15.85%',
+    '&:after': {
+      border: '1px solid black',
+      borderRadius: 10,
+      content: "'At least 5 Xs'",
+      fontSize: '2vw',
+      marginRight: theme.spacing(5),
+      marginTop: theme.spacing(),
+      paddingBottom: theme.spacing(72),
+      position: 'fixed',
+      right: 0,
+      textAlign: 'center',
+      top: 0,
+      width: '15.85%',
+    }
   },
+  fiveX: {
+    display: 'inline-block',
+    textAlign: 'center',
+    border: '1px solid',
+    float: 'right',
+    width: '15%',
+    borderBottom: '0',
+    marginRight: '0.15em',
+    borderTopRightRadius: '0.75em',
+    borderTopLeftRadius: '0.75em',
+  }
 });
 
 class QuixxScoreCard extends Component {
@@ -68,15 +88,11 @@ class QuixxScoreCard extends Component {
   render() {
     const { classes } = this.props;
     const { 
-      blue,
       blueScore = 0,
-      green,
       greenScore = 0,
-      red,
       redScore = 0,
       strikes,
       strikesScore = 0,
-      yellow,
       yellowScore = 0,
       showBlue, 
       showGreen, 
@@ -88,31 +104,8 @@ class QuixxScoreCard extends Component {
 
     return (
       <Paper className={classes.paper}>
-        <div className={classes.blackBox}>
-          At least 5 X's
-        </div>
-        <NumberRow
-          color={'red'}
-          row={red}
-          onClick={this.handleClick}
-        />
-        <NumberRow
-          color={'yellow'}
-          row={yellow}
-          onClick={this.handleClick}
-        />
-        <NumberRow
-          color={'green'}
-          row={green}
-          reverse
-          onClick={this.handleClick}
-        />
-        <NumberRow
-          color={'blue'}
-          row={blue}
-          reverse
-          onClick={this.handleClick}
-        />
+        <div className={classes.fiveX}>At least 5 X's</div>
+        <ColorRows {...this.state} onClick={this.handleClick} />
         <StrikesRow
           scoring={scoring}
           strikes={strikes}

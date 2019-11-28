@@ -7,7 +7,7 @@ import { blue, green, red, yellow } from '@material-ui/core/colors';
 
 const colors = { blue, green, red, yellow };
 
-const useStyles = (color) => makeStyles((theme) => ({
+const useStyles = (color, lockSection) => makeStyles((theme) => ({
   row: {
     backgroundColor: color[700],
     borderRadius: 4,
@@ -22,7 +22,7 @@ const useStyles = (color) => makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     position: 'relative',
-    width: `calc((100% / 12) - ${theme.spacing(2)})`,
+    width: `calc((100% / ${lockSection ? '2' : '10'}) - ${theme.spacing(2)})`,
   },
   numberContent: {
     float: 'left',
@@ -40,42 +40,91 @@ const useStyles = (color) => makeStyles((theme) => ({
     transform: 'rotate(45deg)',
   },
   square: {
-    borderRadius: 4,
+    borderRadius: theme.spacing(),
   },
   circle: {
-    borderRadius: 40,
+    borderRadius: theme.spacing(20),
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(),
+    },
   },
 }));
 
-function NumberRow({ color, onClick, reverse, row }) {
+function FreeSection({ color, onClick, reverse, row }) {
   const classes = useStyles(colors[color])();
 
   return (
-    <Grid container justify='space-around' className={classes.row}>
-      {row.map((selected, i) => {
-        const isLock = i + 1 === row.length;
-        return (
-          <Grid 
-            item
-            key={color + i}
-            className={clsx(classes.number, isLock ? classes.circle : classes.square )}
-            onClick={() => onClick(color, i)}
-          >
-            <div className={classes.numberContent}>
-              {selected 
-                ? <span className={classes.x}>X</span>
-                : isLock
-                  ? <LockIcon className={classes.lock} />
-                  : reverse
-                    ? row.length - i
-                    : i + 2
-              }
-            </div>
-          </Grid>
-        );
-      })}
-    </Grid>
+    <div className={classes.row}>
+      <Grid container justify='space-around'>
+        {row.map((selected, i) => {
+          const isLock = i + 1 === row.length;
+          if (i < 10) {
+            return (
+              <Grid 
+                item
+                key={color + i}
+                className={clsx(classes.number, isLock ? classes.circle : classes.square )}
+                onClick={() => onClick(color, i)}
+              >
+                <div className={classes.numberContent}>
+                  {selected 
+                    ? <span className={classes.x}>X</span>
+                    : isLock
+                      ? <LockIcon className={classes.lock} />
+                      : reverse
+                        ? row.length - i
+                        : i + 2
+                  }
+                </div>
+              </Grid>
+            );
+          }
+
+          return null;
+        })}
+      </Grid>
+    </div>
   );
 }
 
-export default NumberRow;
+function LockSection({ color, onClick, reverse, row }) {
+  const classes = useStyles(colors[color], true)();
+
+  return (
+    <div className={classes.row}>
+      <Grid container justify='space-around'>
+        {row.map((selected, i) => {
+          const isLock = i + 1 === row.length;
+          if (i > 9) {
+            return (
+              <Grid 
+                item
+                key={color + i}
+                className={clsx(classes.number, isLock ? classes.circle : classes.square )}
+                onClick={() => onClick(color, i)}
+              >
+                <div className={classes.numberContent}>
+                  {selected 
+                    ? <span className={classes.x}>X</span>
+                    : isLock
+                      ? <LockIcon className={classes.lock} />
+                      : reverse
+                        ? row.length - i
+                        : i + 2
+                  }
+                </div>
+              </Grid>
+            );
+          }
+
+          return null;
+        })}
+      </Grid>
+    </div>
+  );
+}
+
+export {
+  FreeSection,
+  LockSection,
+};

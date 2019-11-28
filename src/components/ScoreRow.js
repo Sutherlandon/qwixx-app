@@ -6,6 +6,7 @@ import { blue, green, grey, red, yellow } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   block: {
+    backgroundColor: 'white',
     border: `2px solid ${grey[500]}`,
     borderRadius: 8,
     cursor: 'pointer',
@@ -47,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 6,
     textAlign: 'center',
     width: '4%'
+  },
+  row: {
+    backgroundColor: grey[400],
   },
   totals: {
     padding: 8,

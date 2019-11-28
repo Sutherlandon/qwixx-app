@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   score: {
+    backgroundColor: 'white',
     border: `2px solid ${grey[500]}`,
     borderRadius: 6,
     fontSize:'1.5vw',
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   strike: {
+    backgroundColor: 'white',
     border: `2px solid ${grey[500]}`,
     borderRadius: 6,
     cursor: 'pointer',
