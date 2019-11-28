@@ -62,6 +62,12 @@ class QuixxScoreCard extends Component {
     strikes: new Array(4).fill(false),
   }
 
+  componentDidMount() {
+    window.onbeforeunload = (e) => {
+      return "Are you sure you want to reset the card?";
+    }
+  }
+
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
