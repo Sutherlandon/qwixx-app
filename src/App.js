@@ -3,10 +3,9 @@ import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import { grey } from '@material-ui/core/colors';
 
-import NumberRow from './components/NumberRow';
+import ColorRows from './components/ColorRows';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
-import ColorRows from './components/ColorRows';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
@@ -15,8 +14,7 @@ const styles = (theme) => ({
     backgroundColor: grey[200],
     padding: theme.spacing(2),
     marginTop: theme.spacing(4),
-    maxWidth: 1000,
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(4),
 
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
@@ -28,32 +26,30 @@ const styles = (theme) => ({
       fontSize: '4vw',
     },
   },
-  blackBox: {
-    '&:after': {
-      border: '1px solid black',
-      borderRadius: 10,
-      content: "'At least 5 Xs'",
-      fontSize: '2vw',
-      marginRight: theme.spacing(5),
-      marginTop: theme.spacing(),
-      paddingBottom: theme.spacing(72),
-      position: 'fixed',
-      right: 0,
-      textAlign: 'center',
-      top: 0,
-      width: '15.85%',
-    }
-  },
-  fiveX: {
+  fiveXTop: {
     display: 'inline-block',
     textAlign: 'center',
     border: '1px solid',
     float: 'right',
+    fontSize: '2vw',
     width: '15%',
-    borderBottom: '0',
+    borderBottom: 0,
     marginRight: '0.15em',
-    borderTopRightRadius: '0.75em',
-    borderTopLeftRadius: '0.75em',
+    borderTopRightRadius: theme.spacing(3),
+    borderTopLeftRadius: theme.spacing(3),
+  },
+  fiveXBottom: {
+    display: 'inline-block',
+    border: '1px solid',
+    float: 'right',
+    height: '0.25em',
+    width: '15%',
+    borderTop: 0,
+    marginRight: '0.15em',
+    marginTop: '-0.25em',
+    marginBottom: theme.spacing(),
+    borderBottomRightRadius: theme.spacing(4),
+    borderBottomLeftRadius: theme.spacing(4),
   }
 });
 
@@ -104,8 +100,9 @@ class QuixxScoreCard extends Component {
 
     return (
       <Paper className={classes.paper}>
-        <div className={classes.fiveX}>At least 5 X's</div>
+        <div className={classes.fiveXTop}>At least 5 X's</div>
         <ColorRows {...this.state} onClick={this.handleClick} />
+        <div className={classes.fiveXBottom}></div>
         <StrikesRow
           scoring={scoring}
           strikes={strikes}

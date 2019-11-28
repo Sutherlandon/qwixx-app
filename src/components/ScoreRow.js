@@ -8,12 +8,12 @@ const useStyles = makeStyles((theme) => ({
   block: {
     backgroundColor: 'white',
     border: `2px solid ${grey[500]}`,
-    borderRadius: 8,
+    borderRadius: theme.spacing(2),
     cursor: 'pointer',
     flexGrow: 1,
     flexShrink: 0,
     fontSize: '3vw',
-    padding: 8,
+    padding: theme.spacing(1),
     textAlign: 'center',
     width: '12%'
   },
@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
   },
   mathSymbol: {
     fontSize: '3vw',
-    padding: 6,
     textAlign: 'center',
     width: '4%'
   },
@@ -53,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[400],
   },
   totals: {
-    padding: 8,
+    padding: theme.spacing(),
     paddingLeft: 0,
     width: '7.5%',
     fontSize: '2vw',

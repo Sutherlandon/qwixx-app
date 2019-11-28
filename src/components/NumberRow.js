@@ -10,7 +10,7 @@ const colors = { blue, green, red, yellow };
 const useStyles = (color, lockSection) => makeStyles((theme) => ({
   row: {
     backgroundColor: color[700],
-    borderRadius: 4,
+    borderRadius: theme.spacing(),
     marginBottom: theme.spacing(2),
     padding: theme.spacing(),
   },
