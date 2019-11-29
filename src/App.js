@@ -1,41 +1,27 @@
 import React, { Component, Fragment } from 'react';
 import cloneDeep from 'lodash.clonedeep';
-import { Paper, AppBar, Toolbar, Button, Typography } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
+import AppBar from './components/AppBar';
 import ColorRows from './components/ColorRows';
+import DiceRow from './components/DiceRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
-  appBar: {
-    marginBottom: theme.spacing(2),
-    color: 'white',
+  cardTitle: {
+    color: theme.palette.grey.dark,
+    display: 'inline-block',
+    fontWeight: 'bold',
+    marginRight: theme.spacing(4),
   },
-  appTitle: {
-    flexGrow: 1,
-  },
-  leftIcon: {
-    marginRight: theme.spacing(2),
-  },
-  paper: {
-    backgroundColor: theme.palette.grey.light,
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(4),
-
-    [theme.breakpoints.up('sm')]: {
-      fontSize: '2.5vw',
-    },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '3vw',
-    },
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '4vw',
-    },
+  cardSubTitle: {
+    color: theme.palette.grey.main,
+    display: 'inline-block',
+    fontWeight: 'bold',
   },
   fiveXTop: {
     display: 'inline-block',
@@ -62,13 +48,20 @@ const styles = (theme) => ({
     borderBottomRightRadius: theme.spacing(4),
     borderBottomLeftRadius: theme.spacing(4),
   },
-  rules: {
-    fontSize: '1.6vw',
-    paddingRight: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingBottom: theme.spacing(2),
-    paddingTop: 0 ,
-    textAlign: 'right',
+  paper: {
+    backgroundColor: theme.palette.grey.light,
+    padding: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '2.5vw',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '3vw',
+    },
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '4vw',
+    },
   },
 });
 
@@ -78,6 +71,17 @@ const blankState = {
   green: new Array(12).fill(false),
   blue: new Array(12).fill(false),
   strikes: new Array(4).fill(false),
+  blueScore: 0,
+  greenScore: 0,
+  redScore: 0,
+  strikesScore: 0,
+  yellowScore: 0,
+  showBlue: false, 
+  showGreen: false, 
+  showRed: false, 
+  showStrikes: false,
+  showYellow: false,
+  showFinal: false,
 }
 
 class QuixxScoreCard extends Component {
@@ -111,6 +115,12 @@ class QuixxScoreCard extends Component {
     });
   }
 
+  handleReset = () => {
+    if (window.confirm('Are you sure you want to reset the card?')) {
+      this.setState(cloneDeep(blankState));
+    }
+  }
+
   render() {
     const { classes } = this.props;
     const { 
@@ -130,24 +140,14 @@ class QuixxScoreCard extends Component {
 
     return (
       <Fragment>
-        <AppBar position='static' className={classes.appBar}>
-          <Toolbar>
-            <Typography variant='h6' className={classes.appTitle}>
-              Qwixx Web App
-            </Typography>
-            <Button onClick={() => {
-              if (window.confirm('Are you sure you want to reset the card?')) {
-                this.setState(cloneDeep(blankState));
-              }
-            }}>
-              <FontAwesomeIcon icon={faRedo} className={classes.leftIcon}/>
-              Reset
-            </Button>
-            <Button href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'>Rules of Play</Button>
-          </Toolbar>
-        </AppBar>
+        <AppBar onReset={this.handleReset} />
+        <DiceRow />
         <Paper className={classes.paper}>
-          <div className={classes.fiveXTop}>At least 5 X's</div>
+          <div>
+            <div className={classes.cardTitle}>QWIXX</div>
+            <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
+            <div className={classes.fiveXTop}>At least 5 X's</div>
+          </div>
           <ColorRows {...this.state} onClick={this.handleClick} />
           <div className={classes.fiveXBottom}></div>
           <StrikesRow

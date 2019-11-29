@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   score: {
     backgroundColor: 'white',
-    border: `2px solid ${theme.palette.grey.main}`,
+    border: `0.1em solid ${theme.palette.grey.main}`,
     borderRadius: theme.spacing(2),
     fontSize:'1.5vw',
     paddingLeft: theme.spacing(),
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   strike: {
     backgroundColor: 'white',
-    border: `2px solid ${theme.palette.grey.main}`,
+    border: `0.05em solid ${theme.palette.grey.main}`,
     borderRadius: theme.spacing(),
     cursor: 'pointer',
     fontWeight: 'bold',
@@ -63,7 +63,7 @@ function StrikesRow(props) {
           <Grid item >
             <div className={classes.score}>
               <div className={classes.scoreTop}>X</div>
-              <div className={classes.scoreBottom}>points</div>
+              <div className={classes.scoreBottom}>Points</div>
             </div>
           </Grid>
           {scoring
