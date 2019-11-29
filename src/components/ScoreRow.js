@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => {
   return ({
     block: {
       backgroundColor: 'white',
-      border: `2px solid ${grey.main}`,
+      border: `2px solid ${grey.dark}`,
       borderRadius: theme.spacing(2),
       cursor: 'pointer',
       flexGrow: 1,
