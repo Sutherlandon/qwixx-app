@@ -70,9 +70,10 @@ class QuixxScoreCard extends Component {
 
   componentDidMount() {
     if (process.env.NODE_ENV === 'production') {
-      window.onbeforeunload = (e) => {
-        return "Are you sure you want to reset the card?";
-      }
+      window.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        e.retrunValue = "Are you sure you want to clear the scorecard?";
+      });
     }
   }
 
