@@ -4,6 +4,9 @@ import { blue, green, grey, red, yellow } from '@material-ui/core/colors';
 export default createMuiTheme({
   spacing: (factor = 1) => `${0.25 * factor}em`,
   palette: {
+    primary: {
+      main: '#ff6501',
+    },
     grey: {
       light: grey[200],
       main: grey[500],

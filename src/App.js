@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Paper } from '@material-ui/core';
+import cloneDeep from 'lodash.clonedeep';
+import { Paper, AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
 import ColorRows from './components/ColorRows';
 import ScoreRow from './components/ScoreRow';
@@ -9,6 +12,16 @@ import StrikesRow from './components/StrikesRow';
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
+  appBar: {
+    marginBottom: theme.spacing(2),
+    color: 'white',
+  },
+  appTitle: {
+    flexGrow: 1,
+  },
+  leftIcon: {
+    marginRight: theme.spacing(2),
+  },
   paper: {
     backgroundColor: theme.palette.grey.light,
     padding: theme.spacing(2),
@@ -59,14 +72,16 @@ const styles = (theme) => ({
   },
 });
 
+const blankState = {
+  red: new Array(12).fill(false),
+  yellow: new Array(12).fill(false),
+  green: new Array(12).fill(false),
+  blue: new Array(12).fill(false),
+  strikes: new Array(4).fill(false),
+}
+
 class QuixxScoreCard extends Component {
-  state = {
-    red: new Array(12).fill(false),
-    yellow: new Array(12).fill(false),
-    green: new Array(12).fill(false),
-    blue: new Array(12).fill(false),
-    strikes: new Array(4).fill(false),
-  }
+  state = cloneDeep(blankState);
 
   componentDidMount() {
     if (process.env.NODE_ENV === 'production') {
@@ -115,9 +130,22 @@ class QuixxScoreCard extends Component {
 
     return (
       <Fragment>
-        <div className={classes.rules}>
-          <a href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'>Rules of Play</a>
-        </div>
+        <AppBar position='static' className={classes.appBar}>
+          <Toolbar>
+            <Typography variant='h6' className={classes.appTitle}>
+              Qwixx Web App
+            </Typography>
+            <Button onClick={() => {
+              if (window.confirm('Are you sure you want to reset the card?')) {
+                this.setState(cloneDeep(blankState));
+              }
+            }}>
+              <FontAwesomeIcon icon={faRedo} className={classes.leftIcon}/>
+              Reset
+            </Button>
+            <Button href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'>Rules of Play</Button>
+          </Toolbar>
+        </AppBar>
         <Paper className={classes.paper}>
           <div className={classes.fiveXTop}>At least 5 X's</div>
           <ColorRows {...this.state} onClick={this.handleClick} />
