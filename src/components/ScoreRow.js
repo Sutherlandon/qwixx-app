@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => {
   return ({
     block: {
       backgroundColor: 'white',
-      border: `2px solid ${grey.dark}`,
+      border: `0.05em solid ${grey.dark}`,
       borderRadius: theme.spacing(2),
       cursor: 'pointer',
       flexGrow: 1,
@@ -81,7 +81,7 @@ function ScoreRow(props) {
   return (
     <Grid container justify='space-between' alignItems='center'>
       <Grid item className={classes.totals}>
-        totals
+        Totals
       </Grid>
       <Grid item
         className={clsx(

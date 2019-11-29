@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import cloneDeep from 'lodash.clonedeep';
-import { Paper, AppBar, Toolbar, Button, Typography, Hidden } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
+import AppBar from './components/AppBar';
 import ColorRows from './components/ColorRows';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
@@ -12,14 +11,6 @@ import StrikesRow from './components/StrikesRow';
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
-  appBar: {
-    backgroundColor: theme.palette.grey.darker,
-    marginBottom: theme.spacing(4),
-    color: 'white',
-  },
-  appTitle: {
-    flexGrow: 1,
-  },
   cardTitle: {
     color: theme.palette.grey.dark,
     display: 'inline-block',
@@ -56,13 +47,6 @@ const styles = (theme) => ({
     borderBottomRightRadius: theme.spacing(4),
     borderBottomLeftRadius: theme.spacing(4),
   },
-  link: {
-    color: 'white',
-    marginRight: theme.spacing(4),
-  },
-  leftIcon: {
-    marginRight: theme.spacing(2),
-  },
   paper: {
     backgroundColor: theme.palette.grey.light,
     padding: theme.spacing(2),
@@ -77,18 +61,6 @@ const styles = (theme) => ({
     [theme.breakpoints.up('xl')]: {
       fontSize: '4vw',
     },
-  },
-  reset: {
-    backgroundColor: theme.palette.red.main,
-    color: 'white',
-  },
-  rules: {
-    fontSize: '1.6vw',
-    paddingRight: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingBottom: theme.spacing(2),
-    paddingTop: 0 ,
-    textAlign: 'right',
   },
 });
 
@@ -141,6 +113,12 @@ class QuixxScoreCard extends Component {
     });
   }
 
+  handleReset = () => {
+    if (window.confirm('Are you sure you want to reset the card?')) {
+      this.setState(cloneDeep(blankState));
+    }
+  }
+
   render() {
     const { classes } = this.props;
     const { 
@@ -160,33 +138,7 @@ class QuixxScoreCard extends Component {
 
     return (
       <Fragment>
-        <AppBar position='static' className={classes.appBar}>
-          <Toolbar>
-            <Typography variant='h6' className={classes.appTitle}>
-              Qwixx App
-            </Typography>
-            <Hidden xsDown>
-              <Button
-                className={classes.link}
-                href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'
-              >
-                Rules of Play
-              </Button>
-            </Hidden>
-            <Button
-              className={classes.reset}
-              variant='contained'
-              onClick={() => {
-                if (window.confirm('Are you sure you want to reset the card?')) {
-                  this.setState(cloneDeep(blankState));
-                }}
-              }
-            >
-              <FontAwesomeIcon icon={faRedo} className={classes.leftIcon}/>
-              Reset
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <AppBar onReset={this.handleReset} />
         <Paper className={classes.paper}>
           <div>
             <div className={classes.cardTitle}>QWIXX</div>
