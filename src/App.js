@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/styles';
 
 import AppBar from './components/AppBar';
 import ColorRows from './components/ColorRows';
+import DiceRow from './components/DiceRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
@@ -139,6 +140,7 @@ class QuixxScoreCard extends Component {
     return (
       <Fragment>
         <AppBar onReset={this.handleReset} />
+        <DiceRow />
         <Paper className={classes.paper}>
           <div>
             <div className={classes.cardTitle}>QWIXX</div>
