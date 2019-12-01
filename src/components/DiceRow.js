@@ -21,6 +21,8 @@ const styles = (theme) => ({
     border: '0.03em solid black',
     borderRadius: '0.2em',
     fontSize: '7vw',
+    height: '0.88em',
+    width: '0.88em',
   },
   diceBlock: {
     fontSize: '7vw',
@@ -71,18 +73,27 @@ const styles = (theme) => ({
 
 class DiceRow extends Component {
   state = {
-    dice: [0, 0, 0, 0, 0, 0],
+    dice: [5, 5, 5, 5, 5, 5],
+    rolling: false,
+  }
+
+  componentDidUpdate() {
+    if (this.state.rolling) {
+      setTimeout(() => this.setState({ rolling: false }), 500);
+    }
   }
 
   handleRoll = () => {
     this.setState({
       dice: this.state.dice.map(() => Math.floor(Math.random() * 6)),
+      rolling: true,
     });
   }
 
   render() {
     const { classes } = this.props;
-    const [white, white2, red, yellow, green, blue] = this.state.dice;
+    const { dice, rolling } = this.state;
+    const [white, white2, red, yellow, green, blue] = dice;
     const White = diceFaces[white];
     const White2 = diceFaces[white2];
     const Red = diceFaces[red];
@@ -103,6 +114,7 @@ class DiceRow extends Component {
           <Grid item>
             <Button
               className={classes.button}
+              disabled={rolling}
               variant='contained'
               onClick={this.handleRoll}
             >
@@ -111,59 +123,59 @@ class DiceRow extends Component {
             </Button>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.whiteDice)}>
-              <White className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.whiteDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <White className={classes.dice} /> : null }
             </div>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.whiteDice)}>
-              <White2 className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.whiteDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <White2 className={classes.dice} /> : null }
             </div>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.redDice)}>
-              <Red className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.redDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <Red className={classes.dice} /> : null }
             </div>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.yellowDice)}>
-              <Yellow className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.yellowDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <Yellow className={classes.dice} /> : null }
             </div>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.greenDice)}>
-              <Green className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.greenDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <Green className={classes.dice} /> : null }
             </div>
           </Grid>
           <Grid item>
-            <div className={clsx(classes.diceWrapper, classes.blueDice)}>
-              <Blue className={classes.dice} />
+            <div className={clsx(
+              classes.diceWrapper,
+              classes.blueDice,
+              { 'rotate-center': rolling }
+            )}>
+              {!rolling ? <Blue className={classes.dice} /> : null }
             </div>
           </Grid>
-          {/* <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.yellowDice)}
-                icon={dice[yellow]}
-              />
-            </div>
-          </Grid>
-          <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.greenDice)}
-                icon={dice[green]}
-              />
-            </div>
-          </Grid>
-          <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.blueDice)}
-                icon={dice[blue]}
-              />
-            </div>
-          </Grid> */}
         </Grid>
       </Paper>
     );
