@@ -21,8 +21,9 @@ const styles = (theme) => ({
     border: '0.03em solid black',
     borderRadius: '0.2em',
     fontSize: '7vw',
-    height: '0.88em',
-    width: '0.88em',
+    height: '0.91em',
+    cursor: 'pointer',
+    width: '0.91em',
   },
   diceBlock: {
     fontSize: '7vw',
@@ -37,6 +38,15 @@ const styles = (theme) => ({
     fontSize: '7vw',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
+  },
+  disabledDiceWrapper: {
+    backgroundColor: theme.palette.grey.main,
+    color: 'black',
+  },
+  disabledDice: {
+    position: 'relative',
+    top: '0.45em',
+    left: '0.1em',
   },
   whiteDice: {
     color: 'black',
@@ -74,6 +84,7 @@ const styles = (theme) => ({
 class DiceRow extends Component {
   state = {
     dice: [5, 5, 5, 5, 5, 5],
+    disabledDice: [false, false, false, false, false, false],
     rolling: false,
   }
 
@@ -83,16 +94,33 @@ class DiceRow extends Component {
     }
   }
 
+  toggleDisabled = (i) => {
+    const { disabledDice } = this.state;
+    disabledDice[i] = !disabledDice[i];
+    this.setState({ disabledDice });
+  }
+
   handleRoll = () => {
+    const dice = this.state.dice.map((number, i) => {
+      // never change a disabled die's number
+      // it wouldn't change if it was sitting out of the game on the table
+      // would it?
+      if (this.state.disabledDice[i]) {
+        return number;
+      }
+
+      return Math.floor(Math.random() * 6);
+    });
+
     this.setState({
-      dice: this.state.dice.map(() => Math.floor(Math.random() * 6)),
+      dice,
       rolling: true,
     });
   }
 
   render() {
     const { classes } = this.props;
-    const { dice, rolling } = this.state;
+    const { dice, disabledDice, rolling } = this.state;
     const [white, white2, red, yellow, green, blue] = dice;
     const White = diceFaces[white];
     const White2 = diceFaces[white2];
@@ -122,13 +150,21 @@ class DiceRow extends Component {
               Roll
             </Button>
           </Grid>
+          {/* Make this thing a component already! */}
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.whiteDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <White className={classes.dice} /> : null }
+            <div 
+              className={clsx(
+                classes.diceWrapper,
+                disabledDice[0] ? classes.disabledDiceWrapper : classes.whiteDice,
+                { 'rotate-center': rolling && !disabledDice[0]  }
+              )}
+              onClick={() => this.toggleDisabled(0)}
+            >
+              {disabledDice[0]
+                ? <div className={classes.disabledDice}>X</div>
+                : !rolling
+                  ? <White className={classes.dice} />
+                  : null }
             </div>
           </Grid>
           <Grid item>

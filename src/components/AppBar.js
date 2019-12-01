@@ -38,6 +38,7 @@ export default function QwixxAppBar({ onReset }) {
           <Button
             className={classes.link}
             href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'
+            target='_'
           >
             Rules of Play
           </Button>
