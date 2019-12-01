@@ -12,6 +12,10 @@ import StrikesRow from './components/StrikesRow';
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
+  cardTitleRow: {
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
   cardTitle: {
     color: theme.palette.grey.dark,
     display: 'inline-block',
@@ -22,6 +26,7 @@ const styles = (theme) => ({
     color: theme.palette.grey.main,
     display: 'inline-block',
     fontWeight: 'bold',
+    flexGrow: 1,
   },
   fiveXTop: {
     display: 'inline-block',
@@ -52,6 +57,8 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.grey.light,
     padding: theme.spacing(2),
     paddingTop: theme.spacing(2),
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
 
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
@@ -143,7 +150,7 @@ class QuixxScoreCard extends Component {
         <AppBar onReset={this.handleReset} />
         <DiceRow />
         <Paper className={classes.paper}>
-          <div>
+          <div className={classes.cardTitleRow}>
             <div className={classes.cardTitle}>QWIXX</div>
             <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
             <div className={classes.fiveXTop}>At least 5 X's</div>

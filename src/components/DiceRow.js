@@ -3,61 +3,58 @@ import clsx from 'clsx';
 import { Paper, Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faDice,
-  faDiceOne,
-  faDiceTwo,
-  faDiceThree,
-  faDiceFour,
-  faDiceFive,
-  faDiceSix,
-} from '@fortawesome/free-solid-svg-icons';
+import { faDice } from '@fortawesome/free-solid-svg-icons';
+import { One, Two, Three, Four, Five, Six } from './DiceFaces';
 
-const dice = [
-  faDiceOne,
-  faDiceTwo,
-  faDiceThree,
-  faDiceFour,
-  faDiceFive,
-  faDiceSix,
-]
+const diceFaces = [One, Two, Three, Four, Five, Six];
 
 const styles = (theme) => ({
   button: {
     backgroundColor: theme.palette.blue.main,
     color: 'white',
     fontSize: '2vw',
+    '&:hover': {
+      backgroundColor: theme.palette.blue.main,
+    }
   },
   diceWrapper: {
     border: '0.03em solid black',
     borderRadius: '0.2em',
     fontSize: '7vw',
-    height: '0.88em',
-    overflow: 'hidden',
+  },
+  diceBlock: {
+    fontSize: '7vw',
   },
   dice: {
-    position: 'relative',
-    top: '-0.25em',
+    borderRadius: '0.2em',
+    height: '0.88em',
+    width: '0.88em',
+  },
+  diceRow: {
+    lineHeight: 0,
+    fontSize: '7vw',
+    paddingLeft: theme.spacing(),
+    paddingRight: theme.spacing(),
   },
   whiteDice: {
-    color: 'white',
-    backgroundColor: 'black',
+    color: 'black',
+    backgroundColor: 'white',
   },
   redDice: {
-    color: theme.palette.red.main,
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.red.main,
+    color: 'white',
   },
   yellowDice: {
-    color: theme.palette.yellow.main,
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.yellow.main,
+    color: 'white',
   },
   greenDice: {
-    color: theme.palette.green.main,
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.green.main,
+    color: 'white',
   },
   blueDice: {
-    color: theme.palette.blue.main,
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.blue.main,
+    color: 'white',
   },
   leftIcon: {
     marginRight: theme.spacing(2),
@@ -86,12 +83,19 @@ class DiceRow extends Component {
   render() {
     const { classes } = this.props;
     const [white, white2, red, yellow, green, blue] = this.state.dice;
+    const White = diceFaces[white];
+    const White2 = diceFaces[white2];
+    const Red = diceFaces[red];
+    const Yellow = diceFaces[yellow];
+    const Green = diceFaces[green];
+    const Blue = diceFaces[blue];
 
     return (
       <Paper className={classes.paper}>
         <Grid
+          className={classes.diceRow}
           container
-          spacing={4}
+          spacing={1}
           jusitfy='space-around'
           alignItems='center'
           wrap='nowrap'
@@ -107,30 +111,36 @@ class DiceRow extends Component {
             </Button>
           </Grid>
           <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.whiteDice)}
-                icon={dice[white]} 
-              />
+            <div className={clsx(classes.diceWrapper, classes.whiteDice)}>
+              <White className={classes.dice} />
             </div>
           </Grid>
           <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.whiteDice)}
-                icon={dice[white2]}
-              />
+            <div className={clsx(classes.diceWrapper, classes.whiteDice)}>
+              <White2 className={classes.dice} />
             </div>
           </Grid>
           <Grid item>
-            <div className={classes.diceWrapper}>
-              <FontAwesomeIcon
-                className={clsx(classes.dice, classes.redDice)}
-                icon={dice[red]}
-              />
+            <div className={clsx(classes.diceWrapper, classes.redDice)}>
+              <Red className={classes.dice} />
             </div>
           </Grid>
           <Grid item>
+            <div className={clsx(classes.diceWrapper, classes.yellowDice)}>
+              <Yellow className={classes.dice} />
+            </div>
+          </Grid>
+          <Grid item>
+            <div className={clsx(classes.diceWrapper, classes.greenDice)}>
+              <Green className={classes.dice} />
+            </div>
+          </Grid>
+          <Grid item>
+            <div className={clsx(classes.diceWrapper, classes.blueDice)}>
+              <Blue className={classes.dice} />
+            </div>
+          </Grid>
+          {/* <Grid item>
             <div className={classes.diceWrapper}>
               <FontAwesomeIcon
                 className={clsx(classes.dice, classes.yellowDice)}
@@ -153,7 +163,7 @@ class DiceRow extends Component {
                 icon={dice[blue]}
               />
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Paper>
     );
