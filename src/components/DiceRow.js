@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import clsx from 'clsx';
 import { Paper, Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDice } from '@fortawesome/free-solid-svg-icons';
 import { One, Two, Three, Four, Five, Six } from './DiceFaces';
+import Die from './Die';
 
 const diceFaces = [One, Two, Three, Four, Five, Six];
 
 const styles = (theme) => ({
+  paper: {
+    marginBottom: theme.spacing(6),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    width: 'fit-content',
+  },
   button: {
     backgroundColor: theme.palette.blue.main,
     color: 'white',
@@ -17,36 +25,14 @@ const styles = (theme) => ({
       backgroundColor: theme.palette.blue.main,
     }
   },
-  diceWrapper: {
-    border: '0.03em solid black',
-    borderRadius: '0.2em',
-    fontSize: '7vw',
-    height: '0.91em',
-    cursor: 'pointer',
-    width: '0.91em',
-  },
-  diceBlock: {
-    fontSize: '7vw',
-  },
-  dice: {
-    borderRadius: '0.2em',
-    height: '0.88em',
-    width: '0.88em',
-  },
   diceRow: {
     lineHeight: 0,
     fontSize: '7vw',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
   },
-  disabledDiceWrapper: {
-    backgroundColor: theme.palette.grey.main,
-    color: 'black',
-  },
-  disabledDice: {
-    position: 'relative',
-    top: '0.45em',
-    left: '0.1em',
+  leftIcon: {
+    marginRight: theme.spacing(2),
   },
   whiteDice: {
     color: 'black',
@@ -67,17 +53,6 @@ const styles = (theme) => ({
   blueDice: {
     backgroundColor: theme.palette.blue.main,
     color: 'white',
-  },
-  leftIcon: {
-    marginRight: theme.spacing(2),
-  },
-  paper: {
-    marginBottom: theme.spacing(6),
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    width: 'fit-content',
   },
 });
 
@@ -150,67 +125,55 @@ class DiceRow extends Component {
               Roll
             </Button>
           </Grid>
-          {/* Make this thing a component already! */}
           <Grid item>
-            <div 
-              className={clsx(
-                classes.diceWrapper,
-                disabledDice[0] ? classes.disabledDiceWrapper : classes.whiteDice,
-                { 'rotate-center': rolling && !disabledDice[0]  }
-              )}
-              onClick={() => this.toggleDisabled(0)}
-            >
-              {disabledDice[0]
-                ? <div className={classes.disabledDice}>X</div>
-                : !rolling
-                  ? <White className={classes.dice} />
-                  : null }
-            </div>
+            <Die
+              className={classes.whiteDice}
+              component={White}
+              rolling={rolling}
+            />
           </Grid>
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.whiteDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <White2 className={classes.dice} /> : null }
-            </div>
+            <Die
+              className={classes.whiteDice}
+              component={White2}
+              rolling={rolling}
+            />
           </Grid>
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.redDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <Red className={classes.dice} /> : null }
-            </div>
+            <Die
+              className={classes.redDice}
+              component={Red}
+              disabled={disabledDice[2]}
+              onClick={() => this.toggleDisabled(2)}
+              rolling={rolling}
+            />
           </Grid>
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.yellowDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <Yellow className={classes.dice} /> : null }
-            </div>
+            <Die
+              className={classes.yellowDice}
+              component={Yellow}
+              disabled={disabledDice[3]}
+              onClick={() => this.toggleDisabled(3)}
+              rolling={rolling}
+            />
           </Grid>
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.greenDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <Green className={classes.dice} /> : null }
-            </div>
+            <Die
+              className={classes.greenDice}
+              component={Green}
+              disabled={disabledDice[4]}
+              onClick={() => this.toggleDisabled(4)}
+              rolling={rolling}
+            />
           </Grid>
           <Grid item>
-            <div className={clsx(
-              classes.diceWrapper,
-              classes.blueDice,
-              { 'rotate-center': rolling }
-            )}>
-              {!rolling ? <Blue className={classes.dice} /> : null }
-            </div>
+            <Die
+              className={classes.blueDice}
+              component={Blue}
+              disabled={disabledDice[5]}
+              onClick={() => this.toggleDisabled(5)}
+              rolling={rolling}
+            />
           </Grid>
         </Grid>
       </Paper>
