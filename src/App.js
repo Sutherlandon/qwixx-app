@@ -55,6 +55,11 @@ const styles = (theme) => ({
   },
   footer: {
     textAlign: 'center',
+    fontSize: '1vw',
+    '& p': {
+      width: '80%',
+      margin: '2em auto',
+    }
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
