@@ -7,8 +7,10 @@ import { faRedo } from '@fortawesome/free-solid-svg-icons';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.grey.darker,
-    marginBottom: theme.spacing(4),
     color: 'white',
+    marginBottom: theme.spacing(8),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
   },
   appTitle: {
     flexGrow: 1,

@@ -29,29 +29,32 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   fiveXTop: {
-    display: 'inline-block',
-    textAlign: 'center',
     border: '1px solid',
+    borderBottom: 0,
+    borderTopLeftRadius: theme.spacing(3),
+    borderTopRightRadius: theme.spacing(3),
+    display: 'inline-block',
     float: 'right',
     fontSize: '2vw',
-    width: '15%',
-    borderBottom: 0,
     marginRight: '0.15em',
-    borderTopRightRadius: theme.spacing(3),
-    borderTopLeftRadius: theme.spacing(3),
+    textAlign: 'center',
+    width: '15%',
   },
   fiveXBottom: {
-    display: 'inline-block',
     border: '1px solid',
+    borderBottomLeftRadius: theme.spacing(4),
+    borderBottomRightRadius: theme.spacing(4),
+    borderTop: 0,
+    display: 'inline-block',
     float: 'right',
     height: '0.25em',
-    width: '15%',
-    borderTop: 0,
+    marginBottom: theme.spacing(),
     marginRight: '0.15em',
     marginTop: '-0.25em',
-    marginBottom: theme.spacing(),
-    borderBottomRightRadius: theme.spacing(4),
-    borderBottomLeftRadius: theme.spacing(4),
+    width: '15%',
+  },
+  footer: {
+    textAlign: 'center',
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -177,6 +180,10 @@ class QuixxScoreCard extends Component {
             revealScore={(score) => this.setState({ [score]: !this.state[score] })}
           />
         </Paper>
+        <div className={classes.footer}>
+          <p>QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
+          This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a></p>
+        </div>
       </Fragment>
     );
   }
