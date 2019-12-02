@@ -14,6 +14,6 @@ any of the game rules. Since QWIXX is a table top game, families may have house 
 disregard certian rules all together, and I didn't to eliminate that aspect of the game.  
 There is a link to the game rules included in the app so users can go read up on how to play.
 
-Check it out a [sutherlandon.com/qwixx](https://sutherlandon.com/qwixx)
+Check it out a [sutherlandon.com/qwixx-app](https://sutherlandon.com/qwixx-app)
 
 ![QWIXX App Screenshot](https://sutherlandon.com/static/media/qwixx-app.jpg)
