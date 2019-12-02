@@ -1,5 +1,5 @@
 # QWIXX App
-QWIXX is a trademark of [Gamewright](https://gamewright.com)>, a division of Ceaco, Inc.
+QWIXX is a trademark of [Gamewright](https://gamewright.com), a division of Ceaco, Inc.
 No copywright infringment is intended by this project.
 
 QWIXX is a table top game played with six dice and score cards.  I enjoyed the game so much
@@ -16,4 +16,4 @@ There is a link to the game rules included in the app so users can go read up on
 
 Check it out a [sutherlandon.com/qwixx-app](https://sutherlandon.com/qwixx-app)
 
-![QWIXX App Screenshot](https://sutherlandon.com/static/media/qwixx-app.jpg)
+![QWIXX App Screenshot](https://sutherlandon.com/static/media/qwixx-app.c2642bbc.jpg)
