@@ -59,7 +59,6 @@ const styles = (theme) => ({
 class DiceRow extends Component {
   state = {
     dice: [5, 5, 5, 5, 5, 5],
-    disabledDice: [false, false, false, false, false, false],
     rolling: false,
   }
 
@@ -67,12 +66,6 @@ class DiceRow extends Component {
     if (this.state.rolling) {
       setTimeout(() => this.setState({ rolling: false }), 500);
     }
-  }
-
-  toggleDisabled = (i) => {
-    const { disabledDice } = this.state;
-    disabledDice[i] = !disabledDice[i];
-    this.setState({ disabledDice });
   }
 
   handleRoll = () => {
@@ -94,8 +87,8 @@ class DiceRow extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { dice, disabledDice, rolling } = this.state;
+    const { classes,  disabledDice, toggleDisabled } = this.props;
+    const { dice, rolling } = this.state;
     const [white, white2, red, yellow, green, blue] = dice;
     const White = diceFaces[white];
     const White2 = diceFaces[white2];
@@ -144,7 +137,7 @@ class DiceRow extends Component {
               className={classes.redDice}
               component={Red}
               disabled={disabledDice[2]}
-              onClick={() => this.toggleDisabled(2)}
+              onClick={() => toggleDisabled(2)}
               rolling={rolling}
             />
           </Grid>
@@ -153,7 +146,7 @@ class DiceRow extends Component {
               className={classes.yellowDice}
               component={Yellow}
               disabled={disabledDice[3]}
-              onClick={() => this.toggleDisabled(3)}
+              onClick={() => toggleDisabled(3)}
               rolling={rolling}
             />
           </Grid>
@@ -162,7 +155,7 @@ class DiceRow extends Component {
               className={classes.greenDice}
               component={Green}
               disabled={disabledDice[4]}
-              onClick={() => this.toggleDisabled(4)}
+              onClick={() => toggleDisabled(4)}
               rolling={rolling}
             />
           </Grid>
@@ -171,7 +164,7 @@ class DiceRow extends Component {
               className={classes.blueDice}
               component={Blue}
               disabled={disabledDice[5]}
-              onClick={() => this.toggleDisabled(5)}
+              onClick={() => toggleDisabled(5)}
               rolling={rolling}
             />
           </Grid>

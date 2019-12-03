@@ -3,12 +3,12 @@
   "name": "QWIXX App",
   "icons": [
     {
-      "src": "/img/logo-512.png",
+      "src": "img/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "/img/logo-192.png",
+      "src": "img/logo-192.png",
       "type": "image/png",
       "sizes": "192x192"
     }

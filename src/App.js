@@ -81,22 +81,23 @@ const styles = (theme) => ({
 });
 
 const blankState = {
-  red: new Array(12).fill(false),
-  yellow: new Array(12).fill(false),
-  green: new Array(12).fill(false),
   blue: new Array(12).fill(false),
-  strikes: new Array(4).fill(false),
   blueScore: 0,
+  disabledDice: new Array(6).fill(false),
+  green: new Array(12).fill(false),
   greenScore: 0,
+  red: new Array(12).fill(false),
   redScore: 0,
-  strikesScore: 0,
-  yellowScore: 0,
   showBlue: false, 
+  showFinal: false,
   showGreen: false, 
   showRed: false, 
   showStrikes: false,
   showYellow: false,
-  showFinal: false,
+  strikes: new Array(4).fill(false),
+  strikesScore: 0,
+  yellow: new Array(12).fill(false),
+  yellowScore: 0,
 }
 
 class QuixxScoreCard extends Component {
@@ -123,8 +124,8 @@ class QuixxScoreCard extends Component {
     row[index] = !row[index];
     const numXs = row.filter(value => value).length;
     const score = color === 'strikes' ? numXs * 5 : scoring[numXs];
-    
-    this.setState({ 
+
+    this.setState({
       [color]: row,
       [`${color}Score`]: score,
     });
@@ -136,27 +137,37 @@ class QuixxScoreCard extends Component {
     }
   }
 
+  toggleDisabled = (i) => {
+    const { disabledDice } = this.state;
+    disabledDice[i] = !disabledDice[i];
+    this.setState({ disabledDice });
+  }
+
   render() {
     const { classes } = this.props;
-    const { 
+    const {
       blueScore = 0,
+      disabledDice,
       greenScore = 0,
       redScore = 0,
+      showBlue,
+      showFinal,
+      showGreen,
+      showRed,
+      showStrikes,
+      showYellow,
       strikes,
       strikesScore = 0,
       yellowScore = 0,
-      showBlue, 
-      showGreen, 
-      showRed, 
-      showStrikes,
-      showYellow,
-      showFinal,
     } = this.state;
 
     return (
       <Fragment>
         <AppBar onReset={this.handleReset} />
-        <DiceRow />
+        <DiceRow 
+          disabledDice={disabledDice}
+          toggleDisabled={this.toggleDisabled}
+        />
         <Paper className={classes.paper}>
           <div className={classes.cardTitleRow}>
             <div className={classes.cardTitle}>QWIXX</div>
