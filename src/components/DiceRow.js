@@ -73,7 +73,7 @@ class DiceRow extends Component {
       // never change a disabled die's number
       // it wouldn't change if it was sitting out of the game on the table
       // would it?
-      if (this.state.disabledDice[i]) {
+      if (this.props.disabledDice[i]) {
         return number;
       }
 
