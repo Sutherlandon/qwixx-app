@@ -9,6 +9,8 @@ import DiceRow from './components/DiceRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
+import rules from './QwixxTM-RULES.pdf';
+
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
@@ -55,11 +57,13 @@ const styles = (theme) => ({
   },
   footer: {
     textAlign: 'center',
+    fontSize: '1.5vw',
+    margin: `${theme.spacing(2)} auto`,
+  },
+  disclaimer: {
+    textAlign: 'center',
     fontSize: '1vw',
-    '& p': {
-      width: '80%',
-      margin: '2em auto',
-    }
+    margin: `${theme.spacing(2)} auto`,
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -67,6 +71,7 @@ const styles = (theme) => ({
     paddingTop: theme.spacing(2),
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
+    marginBottom: theme.spacing(2),
 
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
@@ -104,12 +109,20 @@ class QuixxScoreCard extends Component {
   state = cloneDeep(blankState);
 
   componentDidMount() {
-    if (process.env.NODE_ENV === 'production') {
-      window.addEventListener('beforeunload', (e) => {
-        e.preventDefault();
-        e.retrunValue = "Are you sure you want to clear the scorecard?";
-      });
+    // if there is a saved state, reload it
+    let savedState = localStorage.getItem('QwixxAppState');
+    if (savedState) {
+      savedState = JSON.parse(savedState);
+      console.log('loaded saved state', savedState);
+      localStorage.removeItem('QwixxAppState');
+      this.setState(savedState);
     }
+
+    // save the state if the user navagates away or refreshes
+    window.addEventListener('pagehide', (e) => {
+      console.log('saving state', this.state);
+      localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
+    });
   }
 
   handleChange = (event) => {
@@ -196,9 +209,12 @@ class QuixxScoreCard extends Component {
             revealScore={(score) => this.setState({ [score]: !this.state[score] })}
           />
         </Paper>
+        <div className={classes.disclaimer}>
+          QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
+          This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+        </div>
         <div className={classes.footer}>
-          <p>QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
-          This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a></p>
+          <a href={rules} target='_'>Rules of Play</a>
         </div>
       </Fragment>
     );
