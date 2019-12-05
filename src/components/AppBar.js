@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
+import rules from '../QwixxTM-RULES.pdf';
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.grey.darker,
@@ -39,7 +41,7 @@ export default function QwixxAppBar({ onReset }) {
         <Hidden xsDown>
           <Button
             className={classes.link}
-            href='https://gamewright.com/pdfs/Rules/QwixxTM-RULES.pdf'
+            href={rules}
             target='_'
           >
             Rules of Play
