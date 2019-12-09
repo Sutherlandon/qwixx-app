@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     border: `0.1em solid ${theme.palette.grey.main}`,
     borderRadius: theme.spacing(2),
-    fontSize:'1.5vw',
+    fontSize:'2vw',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
   },
@@ -62,7 +62,7 @@ function StrikesRow(props) {
         <Grid container spacing={1} justify='space-between' wrap='nowrap'>
           <Grid item >
             <div className={classes.score}>
-              <div className={classes.scoreTop}>X</div>
+              <div className={classes.scoreTop} style={{ fontWeight: 'bold' }}>X</div>
               <div className={classes.scoreBottom}>Points</div>
             </div>
           </Grid>
