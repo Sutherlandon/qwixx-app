@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
@@ -71,7 +71,7 @@ const styles = (theme) => ({
     paddingTop: theme.spacing(2),
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(),
 
     [theme.breakpoints.up('sm')]: {
       fontSize: '2.5vw',
@@ -83,6 +83,16 @@ const styles = (theme) => ({
       fontSize: '4vw',
     },
   },
+  // scalerWrapper: {
+  //   position: 'relative',
+  // },
+  // gameWrapper: {
+  //   position: 'relative',
+  //   top: '50%',
+  //   left: '50%',
+  //   transform: 'translate(-50%, 0)',
+  //   transformOriginl: 'center center',
+  // },
 });
 
 const blankState = {
@@ -119,10 +129,37 @@ class QuixxScoreCard extends Component {
     }
 
     // save the state if the user navagates away or refreshes
-    window.addEventListener('pagehide', (e) => {
+    window.addEventListener('pagehide', () => {
       console.log('saving state', this.state);
       localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
     });
+
+    // Rescale the card to fit on the screen on orientation change
+    window.addEventListener('orientationchange', () => {
+      console.log('rescaling card');
+      this.setState({ scaler: this.getScaler() });
+    });
+
+    // set the initial scaler for the game
+    this.setState({ scaler: this.getScaler() });
+  }
+
+  /**
+   * Calculates a scale factor for how to scale the card and dice so they
+   * always fit on the screen regardless of orientation. Scaler is always 1
+   * unless the height < width, then we scale based on the height of the screen
+   */
+  getScaler = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const gameHeight = document.getElementById('game-wrapper').clientHeight;
+
+    let scaler = 1;
+    if (height < width) {
+      scaler = window.innerHeight / gameHeight;
+    }
+
+    return scaler;
   }
 
   handleChange = (event) => {
@@ -163,6 +200,7 @@ class QuixxScoreCard extends Component {
       disabledDice,
       greenScore = 0,
       redScore = 0,
+      scaler,
       showBlue,
       showFinal,
       showGreen,
@@ -173,50 +211,57 @@ class QuixxScoreCard extends Component {
       strikesScore = 0,
       yellowScore = 0,
     } = this.state;
+    //   gameWrapperStyles = { transform: `scaleY(${height})`}
+    // } else {
+    //   gameWrapperStyles = { transform: `scaleX(${width})`}
+    // }
 
     return (
-      <Fragment>
+      <>
         <AppBar onReset={this.handleReset} />
-        <DiceRow 
-          disabledDice={disabledDice}
-          toggleDisabled={this.toggleDisabled}
-        />
-        <Paper className={classes.paper}>
-          <div className={classes.cardTitleRow}>
-            <div className={classes.cardTitle}>QWIXX</div>
-            <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
-            <div className={classes.fiveXTop}>At least 5 X's</div>
+
+        {/* 1024 X 585 */}
+        <div className={classes.scalerWrapper}>
+          <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
+            <DiceRow 
+              disabledDice={disabledDice}
+              toggleDisabled={this.toggleDisabled}
+            />
+            <Paper className={classes.paper}>
+              <div className={classes.cardTitleRow}>
+                <div className={classes.cardTitle}>QWIXX</div>
+                <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
+                <div className={classes.fiveXTop}>At least 5 X's</div>
+              </div>
+              <ColorRows {...this.state} onClick={this.handleClick} />
+              <div className={classes.fiveXBottom}></div>
+              <StrikesRow
+                scoring={scoring}
+                strikes={strikes}
+                onClick={(i) => this.handleClick('strikes', i)}
+              />
+              <ScoreRow
+                showBlue={showBlue}
+                showGreen={showGreen}
+                showRed={showRed}
+                showStrikes={showStrikes}
+                showYellow={showYellow}
+                showFinal={showFinal}
+                greenScore={greenScore}
+                blueScore={blueScore}
+                redScore={redScore}
+                strikesScore={strikesScore}
+                yellowScore={yellowScore}
+                revealScore={(score) => this.setState({ [score]: !this.state[score] })}
+              />
+            </Paper>
           </div>
-          <ColorRows {...this.state} onClick={this.handleClick} />
-          <div className={classes.fiveXBottom}></div>
-          <StrikesRow
-            scoring={scoring}
-            strikes={strikes}
-            onClick={(i) => this.handleClick('strikes', i)}
-          />
-          <ScoreRow
-            showBlue={showBlue}
-            showGreen={showGreen}
-            showRed={showRed}
-            showStrikes={showStrikes}
-            showYellow={showYellow}
-            showFinal={showFinal}
-            greenScore={greenScore}
-            blueScore={blueScore}
-            redScore={redScore}
-            strikesScore={strikesScore}
-            yellowScore={yellowScore}
-            revealScore={(score) => this.setState({ [score]: !this.state[score] })}
-          />
-        </Paper>
+        </div>
         <div className={classes.disclaimer}>
           QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
           This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
         </div>
-        <div className={classes.footer}>
-          <a href={rules} target='_'>Rules of Play</a>
-        </div>
-      </Fragment>
+      </>
     );
   }
 }

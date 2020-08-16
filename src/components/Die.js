@@ -26,6 +26,25 @@ const useStyles = makeStyles((theme) => ({
     top: '0.45em',
     left: '0.1em',
   },
+  // diceWrapper: {
+  //   border: '1px solid black',
+  //   cursor: 'pointer',
+  //   fontSize: '2.5em',
+  //   borderRadius: '6px',
+  //   paddingLeft: '0.075em',
+  //   paddingRight: '0.075em',
+  // },
+  // dice: {
+  //   borderRadius: '4px',
+  //   margin: 'auto',
+  // },
+  // disabledDiceWrapper: {
+  //   backgroundColor: theme.palette.grey.main,
+  //   color: 'black',
+  // },
+  // disabledDice: {
+  //   position: 'relative',
+  // },
 }));
 
 export default function Die({
@@ -49,7 +68,8 @@ export default function Die({
         ? <div className={classes.disabledDice}>X</div>
         : !rolling
           ? <Component className={classes.dice} />
-          : null }
+          : null
+      }
     </div>
   );
 }

@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize:'2vw',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '1.5vw',
+    },
   },
   scoreTop: {
     borderBottom: `1px solid ${theme.palette.grey.main}`,
