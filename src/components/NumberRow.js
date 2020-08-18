@@ -55,12 +55,13 @@ function FreeSection({ color, onClick, reverse, row }) {
       <Grid container justify='space-around'>
         {row.map((selected, i) => {
           const isLock = i + 1 === row.length;
+
           if (i < 10) {
             return (
               <Grid 
                 item
                 key={color + i}
-                className={clsx(classes.number, isLock ? classes.circle : classes.square )}
+                className={clsx(classes.number, classes.square )}
                 onClick={() => onClick(color, i)}
               >
                 <div className={classes.numberContent}>
@@ -92,13 +93,14 @@ function LockSection({ color, onClick, reverse, row }) {
       <Grid container justify='space-around'>
         {row.map((selected, i) => {
           const isLock = i + 1 === row.length;
+
           if (i > 9) {
             return (
               <Grid 
                 item
                 key={color + i}
                 className={clsx(classes.number, isLock ? classes.circle : classes.square )}
-                onClick={() => onClick(color, i)}
+                onClick={() => onClick(color, i, isLock)}
               >
                 <div className={classes.numberContent}>
                   {selected 

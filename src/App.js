@@ -9,8 +9,6 @@ import DiceRow from './components/DiceRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
-import rules from './QwixxTM-RULES.pdf';
-
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
 const styles = (theme) => ({
@@ -167,7 +165,7 @@ class QuixxScoreCard extends Component {
     this.setState({ [name]: value });
   }
 
-  handleClick = (color, index) => {
+  handleClick = (color, index, isLock) => {
     const row = [...this.state[color]];
 
     // set the X and calculate new score
@@ -179,6 +177,11 @@ class QuixxScoreCard extends Component {
       [color]: row,
       [`${color}Score`]: score,
     });
+
+    if (isLock) {
+      const locks = { red: 2, yellow: 3, green: 4, blue: 5 };
+      this.toggleDisabled(locks[color]);
+    }
   }
 
   handleReset = () => {
@@ -211,16 +214,10 @@ class QuixxScoreCard extends Component {
       strikesScore = 0,
       yellowScore = 0,
     } = this.state;
-    //   gameWrapperStyles = { transform: `scaleY(${height})`}
-    // } else {
-    //   gameWrapperStyles = { transform: `scaleX(${width})`}
-    // }
 
     return (
       <>
         <AppBar onReset={this.handleReset} />
-
-        {/* 1024 X 585 */}
         <div className={classes.scalerWrapper}>
           <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
             <DiceRow 
