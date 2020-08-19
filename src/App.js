@@ -223,7 +223,11 @@ class QuixxScoreCard extends Component {
         disabled[disabled.length - 1] = false;
       }
     } else {
-      disabled = disabled.map((element, i) => i < marks.lastIndexOf(true) ? true : false);
+      const numMarks = marks.filter(value => value).length;
+      disabled = disabled.map((element, i) => {
+        // Check lock section first, then check the rest
+        return (i >= marks.length - 2 && numMarks < 5) || i < marks.lastIndexOf(true);
+      });
     }
 
     this.setState({ 
