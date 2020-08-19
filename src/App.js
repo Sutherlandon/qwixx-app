@@ -81,16 +81,6 @@ const styles = (theme) => ({
       fontSize: '4vw',
     },
   },
-  // scalerWrapper: {
-  //   position: 'relative',
-  // },
-  // gameWrapper: {
-  //   position: 'relative',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, 0)',
-  //   transformOriginl: 'center center',
-  // },
 });
 
 const blankState = {
@@ -121,20 +111,17 @@ class QuixxScoreCard extends Component {
     let savedState = localStorage.getItem('QwixxAppState');
     if (savedState) {
       savedState = JSON.parse(savedState);
-      console.log('loaded saved state', savedState);
       localStorage.removeItem('QwixxAppState');
       this.setState(savedState);
     }
 
     // save the state if the user navagates away or refreshes
     window.addEventListener('pagehide', () => {
-      console.log('saving state', this.state);
       localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
     });
 
     // Rescale the card to fit on the screen on orientation change
     window.addEventListener('orientationchange', () => {
-      console.log('rescaling card');
       this.setState({ scaler: this.getScaler() });
     });
 
@@ -218,41 +205,39 @@ class QuixxScoreCard extends Component {
     return (
       <>
         <AppBar onReset={this.handleReset} />
-        <div className={classes.scalerWrapper}>
-          <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
-            <DiceRow 
-              disabledDice={disabledDice}
-              toggleDisabled={this.toggleDisabled}
+        <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
+          <DiceRow 
+            disabledDice={disabledDice}
+            toggleDisabled={this.toggleDisabled}
+          />
+          <Paper className={classes.paper}>
+            <div className={classes.cardTitleRow}>
+              <div className={classes.cardTitle}>QWIXX</div>
+              <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
+              <div className={classes.fiveXTop}>At least 5 X's</div>
+            </div>
+            <ColorRows {...this.state} onClick={this.handleClick} />
+            <div className={classes.fiveXBottom}></div>
+            <StrikesRow
+              scoring={scoring}
+              strikes={strikes}
+              onClick={(i) => this.handleClick('strikes', i)}
             />
-            <Paper className={classes.paper}>
-              <div className={classes.cardTitleRow}>
-                <div className={classes.cardTitle}>QWIXX</div>
-                <div className={classes.cardSubTitle}>GAMEWRIGHT</div>
-                <div className={classes.fiveXTop}>At least 5 X's</div>
-              </div>
-              <ColorRows {...this.state} onClick={this.handleClick} />
-              <div className={classes.fiveXBottom}></div>
-              <StrikesRow
-                scoring={scoring}
-                strikes={strikes}
-                onClick={(i) => this.handleClick('strikes', i)}
-              />
-              <ScoreRow
-                showBlue={showBlue}
-                showGreen={showGreen}
-                showRed={showRed}
-                showStrikes={showStrikes}
-                showYellow={showYellow}
-                showFinal={showFinal}
-                greenScore={greenScore}
-                blueScore={blueScore}
-                redScore={redScore}
-                strikesScore={strikesScore}
-                yellowScore={yellowScore}
-                revealScore={(score) => this.setState({ [score]: !this.state[score] })}
-              />
-            </Paper>
-          </div>
+            <ScoreRow
+              showBlue={showBlue}
+              showGreen={showGreen}
+              showRed={showRed}
+              showStrikes={showStrikes}
+              showYellow={showYellow}
+              showFinal={showFinal}
+              greenScore={greenScore}
+              blueScore={blueScore}
+              redScore={redScore}
+              strikesScore={strikesScore}
+              yellowScore={yellowScore}
+              revealScore={(score) => this.setState({ [score]: !this.state[score] })}
+            />
+          </Paper>
         </div>
         <div className={classes.disclaimer}>
           QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
