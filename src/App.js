@@ -83,13 +83,23 @@ const styles = (theme) => ({
   },
 });
 
+const diceIndex = { red: 2, yellow: 3, green: 4, blue: 5 };
 const blankState = {
-  blue: new Array(12).fill(false),
+  blue: [
+    new Array(12).fill(false),
+    [false, false, false, false, false, false, false, false, false, false, true, true]
+  ],
   blueScore: 0,
   disabledDice: new Array(6).fill(false),
-  green: new Array(12).fill(false),
+  green: [
+    new Array(12).fill(false),
+    [false, false, false, false, false, false, false, false, false, false, true, true]
+  ],
   greenScore: 0,
-  red: new Array(12).fill(false),
+  red: [
+    new Array(12).fill(false),
+    [false, false, false, false, false, false, false, false, false, false, true, true]
+  ],
   redScore: 0,
   showBlue: false, 
   showFinal: false,
@@ -99,7 +109,10 @@ const blankState = {
   showYellow: false,
   strikes: new Array(4).fill(false),
   strikesScore: 0,
-  yellow: new Array(12).fill(false),
+  yellow: [
+    new Array(12).fill(false),
+    [false, false, false, false, false, false, false, false, false, false, true, true]
+  ],
   yellowScore: 0,
 }
 
@@ -108,10 +121,10 @@ class QuixxScoreCard extends Component {
 
   componentDidMount() {
     // if there is a saved state, reload it
-    let savedState = localStorage.getItem('QwixxAppState');
+    let savedState = localStorage.getItem('QwixxAppState2');
     if (savedState) {
       savedState = JSON.parse(savedState);
-      localStorage.removeItem('QwixxAppState');
+      localStorage.removeItem('QwixxAppState2');
       this.setState(savedState);
     }
 
@@ -147,28 +160,44 @@ class QuixxScoreCard extends Component {
     return scaler;
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
   handleClick = (color, index, isLock) => {
-    const row = [...this.state[color]];
+    const { disabledDice } = this.state;
+    let [marks, disabled] = this.state[color];
 
-    // set the X and calculate new score
-    row[index] = !row[index];
-    const numXs = row.filter(value => value).length;
-    const score = color === 'strikes' ? numXs * 5 : scoring[numXs];
+    // if disabled do nothing
+    if (disabled[index]) {
+      return;
+    }
+
+    // Disable a dice if a lock is marked
+    // really means toggle the state of both lock and dice when they are in the state
+    // this must be done before marks is modified
+    if (isLock && (
+      (!marks[index] && !disabledDice[diceIndex[color]]) ||
+      (marks[index] && disabledDice[diceIndex[color]])
+    )) {
+      this.toggleDisabled(color);
+    }
+
+    // mark the square
+    marks[index] = !marks[index];
+
+    // calculate new score
+    const numMarks = marks.filter(value => value).length;
+    const score = color === 'strikes' ? numMarks * 5 : scoring[numMarks];
+
+    // disable all before the index and enable all after
+    disabled = disabled.map((element, i) => {
+      // Check lock section first, then check the rest
+      return (i >= marks.length - 2 && numMarks < 5) || i < marks.lastIndexOf(true);
+    });
+
 
     this.setState({
-      [color]: row,
+      [color]: [marks, disabled],
       [`${color}Score`]: score,
     });
 
-    if (isLock) {
-      const locks = { red: 2, yellow: 3, green: 4, blue: 5 };
-      this.toggleDisabled(locks[color]);
-    }
   }
 
   handleReset = () => {
@@ -177,10 +206,30 @@ class QuixxScoreCard extends Component {
     }
   }
 
-  toggleDisabled = (i) => {
+  toggleDisabled = (color) => {
     const { disabledDice } = this.state;
-    disabledDice[i] = !disabledDice[i];
-    this.setState({ disabledDice });
+    let [marks, disabled] = this.state[color];
+    const index = diceIndex[color];
+
+    // toggle the specified dice
+    disabledDice[index] = !disabledDice[index];
+
+    // disable or enable the entries of a row
+    if (disabledDice[index]) {
+      disabled = disabled.map(() => true);
+
+      // don't disable the lock if it is marked
+      if (marks[marks.length - 1]) {
+        disabled[disabled.length - 1] = false;
+      }
+    } else {
+      disabled = disabled.map((element, i) => i < marks.lastIndexOf(true) ? true : false);
+    }
+
+    this.setState({ 
+      disabledDice,
+      [color]: [marks, disabled],
+    });
   }
 
   render() {

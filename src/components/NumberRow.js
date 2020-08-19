@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
-import LockIcon from '@material-ui/icons/LockOpenOutlined';
+import OpenLockIcon from '@material-ui/icons/LockOpenOutlined';
+import LockIcon from '@material-ui/icons/Lock';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
@@ -12,8 +13,6 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
     padding: theme.spacing(),
   },
   number: {
-    backgroundColor: theme.palette[color].light,
-    color: theme.palette[color].main,
     cursor: 'pointer',
     padding: theme.spacing(),
     // paddingTop: theme.spacing(2),
@@ -27,14 +26,29 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
     textAlign: 'center',
     width: '100%',
   },
+  liveNumber: {
+    backgroundColor: theme.palette[color].light,
+    color: theme.palette[color].main,
+  },
+  disabledNumber: {
+    backgroundColor: 'transparent',
+    color: 'black',
+  },
+  disabledNumberContent: {
+    textDecoration: 'line-through',
+  },
   x: {
     fontWeight: 'bold',
     color: 'black',
   },
-  lock: {
+  openLock: {
     fontSize: '3vw',
     marginBottom: -4,
     transform: 'rotate(45deg)',
+  },
+  lock: {
+    fontSize: '3vw',
+    marginBottom: -4,
   },
   square: {
     borderRadius: theme.spacing(),
@@ -49,29 +63,27 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
 
 function FreeSection({ color, onClick, reverse, row }) {
   const classes = useStyles(color)();
+  const [marks, disabled] = row;
 
   return (
     <div className={classes.row}>
       <Grid container justify='space-around'>
-        {row.map((selected, i) => {
-          const isLock = i + 1 === row.length;
+        {marks.map((selected, i) => {
 
           if (i < 10) {
             return (
               <Grid 
                 item
                 key={color + i}
-                className={clsx(classes.number, classes.square )}
+                className={clsx(classes.number, classes.square, disabled[i] && !selected ? classes.disabledNumber : classes.liveNumber )}
                 onClick={() => onClick(color, i)}
               >
-                <div className={classes.numberContent}>
+                <div className={clsx(classes.numberContent, disabled[i] && !selected && classes.disabledNumberContent)}>
                   {selected 
                     ? <span className={classes.x}>X</span>
-                    : isLock
-                      ? <LockIcon className={classes.lock} />
-                      : reverse
-                        ? row.length - i
-                        : i + 2
+                    : reverse
+                      ? marks.length - i
+                      : i + 2
                   }
                 </div>
               </Grid>
@@ -87,28 +99,34 @@ function FreeSection({ color, onClick, reverse, row }) {
 
 function LockSection({ color, onClick, reverse, row }) {
   const classes = useStyles(color, true)();
+  const [marks, disabled] = row;
+  const fiveXLocked = marks.filter(value => value).length < 5;
 
   return (
     <div className={classes.row}>
       <Grid container justify='space-around'>
-        {row.map((selected, i) => {
-          const isLock = i + 1 === row.length;
+        {marks.map((selected, i) => {
+          const isLock = i + 1 === marks.length;
 
           if (i > 9) {
             return (
               <Grid 
                 item
                 key={color + i}
-                className={clsx(classes.number, isLock ? classes.circle : classes.square )}
+                className={clsx(classes.number, classes.square, disabled[i] && !selected ? classes.disabledNumber : classes.liveNumber )}
                 onClick={() => onClick(color, i, isLock)}
               >
-                <div className={classes.numberContent}>
+                <div className={clsx(
+                  classes.numberContent,
+                  !fiveXLocked && disabled[i] && !selected && classes.disabledNumberContent)}>
                   {selected 
                     ? <span className={classes.x}>X</span>
                     : isLock
-                      ? <LockIcon className={classes.lock} />
+                      ? disabled[i]
+                        ? <LockIcon className={classes.lock} />
+                        : <OpenLockIcon className={classes.openLock} />
                       : reverse
-                        ? row.length - i
+                        ? marks.length - i
                         : i + 2
                   }
                 </div>

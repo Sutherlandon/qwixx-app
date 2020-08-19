@@ -137,7 +137,7 @@ class DiceRow extends Component {
               className={classes.redDice}
               component={Red}
               disabled={disabledDice[2]}
-              onClick={() => toggleDisabled(2)}
+              onClick={() => toggleDisabled('red')}
               rolling={rolling}
             />
           </Grid>
@@ -146,7 +146,7 @@ class DiceRow extends Component {
               className={classes.yellowDice}
               component={Yellow}
               disabled={disabledDice[3]}
-              onClick={() => toggleDisabled(3)}
+              onClick={() => toggleDisabled('yellow')}
               rolling={rolling}
             />
           </Grid>
@@ -155,7 +155,7 @@ class DiceRow extends Component {
               className={classes.greenDice}
               component={Green}
               disabled={disabledDice[4]}
-              onClick={() => toggleDisabled(4)}
+              onClick={() => toggleDisabled('green')}
               rolling={rolling}
             />
           </Grid>
@@ -164,7 +164,7 @@ class DiceRow extends Component {
               className={classes.blueDice}
               component={Blue}
               disabled={disabledDice[5]}
-              onClick={() => toggleDisabled(5)}
+              onClick={() => toggleDisabled('blue')}
               rolling={rolling}
             />
           </Grid>
