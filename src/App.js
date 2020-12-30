@@ -154,7 +154,7 @@ class QuixxScoreCard extends Component {
 
     let scaler = 1;
     if (height < width) {
-      scaler = window.innerHeight / gameHeight;
+      scaler = window.innerHeight / gameHeight * 0.95;
     }
 
     return scaler;
