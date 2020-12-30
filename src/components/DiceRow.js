@@ -10,24 +10,24 @@ const diceFaces = [One, Two, Three, Four, Five, Six];
 
 const styles = (theme) => ({
   paper: {
-    marginBottom: theme.spacing(8),
+    marginBottom: theme.spacing(2),
     marginLeft: 'auto',
     marginRight: 'auto',
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    padding: `${theme.spacing(1)}px ${theme.spacing(1.5)}px`,
     width: 'fit-content',
   },
   button: {
     backgroundColor: theme.palette.blue.main,
     color: 'white',
-    fontSize: '2vw',
+    fontSize: 18,
+    marginRight: theme.spacing(2),
     '&:hover': {
       backgroundColor: theme.palette.blue.main,
     }
   },
   diceRow: {
     lineHeight: 0,
-    fontSize: '7vw',
+    fontSize: 64,
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
   },

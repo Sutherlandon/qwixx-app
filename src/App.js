@@ -28,17 +28,22 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     flexGrow: 1,
   },
+  disclaimer: {
+    textAlign: 'center',
+    margin: `${theme.spacing(2)} auto`,
+    fontSize: 14,
+  },
   fiveXTop: {
     border: '1px solid',
     borderBottom: 0,
-    borderTopLeftRadius: theme.spacing(3),
-    borderTopRightRadius: theme.spacing(3),
+    borderTopLeftRadius: theme.spacing(2),
+    borderTopRightRadius: theme.spacing(2),
     display: 'inline-block',
     float: 'right',
-    fontSize: '2vw',
-    marginRight: '0.15em',
+    fontSize: 14,
+    marginRight: theme.spacing(0.75),
     textAlign: 'center',
-    width: '15%',
+    width: 130,
   },
   fiveXBottom: {
     border: '1px solid',
@@ -47,21 +52,15 @@ const styles = (theme) => ({
     borderTop: 0,
     display: 'inline-block',
     float: 'right',
-    height: '0.25em',
+    height: theme.spacing(),
     marginBottom: theme.spacing(),
-    marginRight: '0.15em',
-    marginTop: '-0.25em',
-    width: '15%',
+    marginRight: theme.spacing(0.75),
+    marginTop: -theme.spacing(2),
+    width: 130,
   },
-  footer: {
-    textAlign: 'center',
-    fontSize: '1.5vw',
-    margin: `${theme.spacing(2)} auto`,
-  },
-  disclaimer: {
-    textAlign: 'center',
-    fontSize: '1vw',
-    margin: `${theme.spacing(2)} auto`,
+  gameWrapper: {
+    width: 1000,
+    margin: 'auto',
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -70,16 +69,6 @@ const styles = (theme) => ({
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
     marginBottom: theme.spacing(),
-
-    [theme.breakpoints.up('sm')]: {
-      fontSize: '2.5vw',
-    },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '3vw',
-    },
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '4vw',
-    },
   },
 });
 
@@ -154,7 +143,7 @@ class QuixxScoreCard extends Component {
 
     let scaler = 1;
     if (height < width) {
-      scaler = window.innerHeight / gameHeight;
+      scaler = (window.innerHeight / gameHeight) * 0.95;
     }
 
     return scaler;
@@ -281,7 +270,7 @@ class QuixxScoreCard extends Component {
     return (
       <>
         <AppBar onReset={this.handleReset} />
-        <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
+        <div id='game-wrapper' className={classes.gameWrapper} /*style={{ transform: `scale(${scaler})`}}*/>
           <DiceRow 
             disabledDice={disabledDice}
             toggleDisabled={this.toggleDisabled}
@@ -314,10 +303,10 @@ class QuixxScoreCard extends Component {
               revealScore={(score) => this.setState({ [score]: !this.state[score] })}
             />
           </Paper>
-        </div>
-        <div className={classes.disclaimer}>
-          QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
-          This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+          <div className={classes.disclaimer}>
+            QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
+            This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+          </div>
         </div>
       </>
     );

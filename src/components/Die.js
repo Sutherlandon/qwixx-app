@@ -5,17 +5,16 @@ import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   diceWrapper: {
-   border: '0.03em solid black',
-    borderRadius: '0.2em',
-    fontSize: '7vw',
-    height: '0.91em',
+   border: '1px solid black',
+    borderRadius: 8,
+    height: 58,
     cursor: 'pointer',
-    width: '0.91em',
+    width: 58,
   },
   dice: {
-    borderRadius: '0.2em',
-    height: '0.88em',
-    width: '0.88em',
+    borderRadius: 8,
+    height: 56,
+    width: 56,
   },
   disabledDiceWrapper: {
     backgroundColor: theme.palette.grey.main,
@@ -23,28 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
   disabledDice: {
     position: 'relative',
-    top: '0.45em',
-    left: '0.1em',
+    top: 30,
+    left: 6,
   },
-  // diceWrapper: {
-  //   border: '1px solid black',
-  //   cursor: 'pointer',
-  //   fontSize: '2.5em',
-  //   borderRadius: '6px',
-  //   paddingLeft: '0.075em',
-  //   paddingRight: '0.075em',
-  // },
-  // dice: {
-  //   borderRadius: '4px',
-  //   margin: 'auto',
-  // },
-  // disabledDiceWrapper: {
-  //   backgroundColor: theme.palette.grey.main,
-  //   color: 'black',
-  // },
-  // disabledDice: {
-  //   position: 'relative',
-  // },
 }));
 
 export default function Die({

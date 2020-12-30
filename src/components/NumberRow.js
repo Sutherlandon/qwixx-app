@@ -18,11 +18,11 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
     // paddingTop: theme.spacing(2),
     // paddingBottom: theme.spacing(2),
     position: 'relative',
-    width: `calc((100% / ${lockSection ? '2' : '10'}) - ${theme.spacing(2)})`,
+    //width: `calc((100% / ${lockSection ? '2' : '10'}) - ${theme.spacing(2)}px)`,
+    width: 56,
   },
   numberContent: {
     float: 'left',
-    fontSize: '3vw',
     textAlign: 'center',
     width: '100%',
   },
@@ -42,12 +42,12 @@ const useStyles = (color, lockSection) => makeStyles((theme) => ({
     color: 'black',
   },
   openLock: {
-    fontSize: '3vw',
+    fontSize: theme.typography.fontSize,
     marginBottom: -4,
     transform: 'rotate(45deg)',
   },
   lock: {
-    fontSize: '3vw',
+    fontSize: theme.typography.fontSize,
     marginBottom: -4,
   },
   square: {
