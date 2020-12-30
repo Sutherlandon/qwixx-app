@@ -10,12 +10,13 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.grey.darker,
     color: 'white',
-    marginBottom: theme.spacing(8),
+    height: 64,
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
   appTitle: {
     flexGrow: 1,
+    fontSize: 24,
   },
   link: {
     color: 'white',
@@ -43,7 +44,7 @@ export default function QwixxAppBar({ onReset }) {
   return (
     <AppBar position='static' className={classes.appBar}>
       <Toolbar>
-        <Typography variant='h6' className={classes.appTitle}>
+        <Typography variant='h1' className={classes.appTitle}>
           Qwixx App
         </Typography>
         <Hidden xsDown>

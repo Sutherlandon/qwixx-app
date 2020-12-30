@@ -10,6 +10,7 @@ import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
+const gameWidth = 1000;
 
 const styles = (theme) => ({
   cardTitleRow: {
@@ -59,7 +60,11 @@ const styles = (theme) => ({
     width: 130,
   },
   gameWrapper: {
-    width: 1000,
+    position: 'absolute',
+    top: 100,
+    left: 0,
+    right: 0,
+    width: gameWidth,
     margin: 'auto',
   },
   paper: {
@@ -141,9 +146,13 @@ class QuixxScoreCard extends Component {
     const height = window.innerHeight;
     const gameHeight = document.getElementById('game-wrapper').clientHeight;
 
+    console.log({ width, height, gameHeight });
+
     let scaler = 1;
-    if (height < width) {
-      scaler = (window.innerHeight / gameHeight) * 0.95;
+    if (height < width && gameHeight > height) {
+      scaler = (height / gameHeight) * 0.95;
+    } else if (width < gameWidth) {
+      scaler = (width / gameWidth) * 0.95;
     }
 
     return scaler;
@@ -267,10 +276,20 @@ class QuixxScoreCard extends Component {
       yellowScore = 0,
     } = this.state;
 
+    console.log(scaler);
+    const wrapperStyles = scaler !== 1 ? {
+      transform: `translate(-50%) scale(${scaler})`,
+      left: '50%',
+    } : {};
+
     return (
       <>
         <AppBar onReset={this.handleReset} />
-        <div id='game-wrapper' className={classes.gameWrapper} /*style={{ transform: `scale(${scaler})`}}*/>
+        <div 
+          id='game-wrapper'
+          className={classes.gameWrapper}
+          style={wrapperStyles}
+        >
           <DiceRow 
             disabledDice={disabledDice}
             toggleDisabled={this.toggleDisabled}
