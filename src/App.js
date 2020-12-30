@@ -160,6 +160,12 @@ class QuixxScoreCard extends Component {
     return scaler;
   }
 
+  /**
+   * Handles clicks for the colored number rows
+   * @param {String} color The color of the row
+   * @param {Number} index The index of the clicked square
+   * @param {Boolean} isLock Whether or not the square clicked is a lock
+   */
   handleClick = (color, index, isLock) => {
     const { disabledDice } = this.state;
     let [marks, disabled] = this.state[color];
@@ -184,7 +190,7 @@ class QuixxScoreCard extends Component {
 
     // calculate new score
     const numMarks = marks.filter(value => value).length;
-    const score = color === 'strikes' ? numMarks * 5 : scoring[numMarks];
+    const score = scoring[numMarks];
 
     // disable all before the index and enable all after
     disabled = disabled.map((element, i) => {
@@ -192,12 +198,29 @@ class QuixxScoreCard extends Component {
       return (i >= marks.length - 2 && numMarks < 5) || i < marks.lastIndexOf(true);
     });
 
-
     this.setState({
       [color]: [marks, disabled],
       [`${color}Score`]: score,
     });
+  }
 
+  /**
+   * Handles clicks for the strike row 
+   * @param {Number} index The index of the Strike that was clicked
+   */
+  handleClickStrikes = (index) => {
+    const marks = this.state.strikes;
+
+    // mark the square
+    marks[index] = !marks[index];
+
+    // calculate new score
+    const score = marks.filter(value => value).length * 5;
+
+    this.setState({
+      strikes: marks,
+      strikesScore: score,
+    });
   }
 
   handleReset = () => {
@@ -274,7 +297,7 @@ class QuixxScoreCard extends Component {
             <StrikesRow
               scoring={scoring}
               strikes={strikes}
-              onClick={(i) => this.handleClick('strikes', i)}
+              onClick={(i) => this.handleClickStrikes(i)}
             />
             <ScoreRow
               showBlue={showBlue}
