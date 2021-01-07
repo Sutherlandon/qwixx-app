@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    position: 'absolute',
+    zIndex: 100,
   },
   appTitle: {
     flexGrow: 1,

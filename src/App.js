@@ -11,6 +11,7 @@ import StrikesRow from './components/StrikesRow';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 const gameWidth = 1000;
+const gameHeight = 694; // calculated after rendering and here for reference
 
 const styles = (theme) => ({
   cardTitleRow: {
@@ -61,11 +62,11 @@ const styles = (theme) => ({
   },
   gameWrapper: {
     position: 'absolute',
-    top: 100,
     left: 0,
     right: 0,
     width: gameWidth,
     margin: 'auto',
+    marginTop: 80,
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -112,6 +113,8 @@ const blankState = {
 
 class QuixxScoreCard extends Component {
   state = cloneDeep(blankState);
+  startingGameWidth = gameWidth;
+  startingGameHeight = gameHeight;
 
   componentDidMount() {
     // if there is a saved state, reload it
@@ -127,8 +130,8 @@ class QuixxScoreCard extends Component {
       localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
     });
 
-    // Rescale the card to fit on the screen on orientation change
-    window.addEventListener('orientationchange', () => {
+    // Rescale the card to fit on the screen if the size of the screen changes
+    window.addEventListener('resize', () => {
       this.setState({ scaler: this.getScaler() });
     });
 
@@ -142,17 +145,26 @@ class QuixxScoreCard extends Component {
    * unless the height < width, then we scale based on the height of the screen
    */
   getScaler = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const gameHeight = document.getElementById('game-wrapper').clientHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    //const gameHeight = document.getElementById('game-wrapper').clientHeight;
+    const gameHeight = this.startingGameHeight;
 
-    console.log({ width, height, gameHeight });
+    console.log({ windowWidth, windowHeight, gameWidth, gameHeight });
 
+    // scaler starts at 1 which means no scaling needed
     let scaler = 1;
-    if (height < width && gameHeight > height) {
-      scaler = (height / gameHeight) * 0.95;
-    } else if (width < gameWidth) {
-      scaler = (width / gameWidth) * 0.95;
+
+    // do we even need to scale?
+    if (windowHeight < gameHeight || windowWidth < gameWidth) {
+      const scalerH = windowHeight / gameHeight;
+      const scalerW = windowWidth / gameWidth;
+
+      // take the smaller scaler because that one is more important
+      scaler = scalerH < scalerW ? scalerH : scalerW
+
+      // shrink just a little to add some padding around the edges
+      scaler = scaler * 0.98;
     }
 
     return scaler;
@@ -277,10 +289,14 @@ class QuixxScoreCard extends Component {
     } = this.state;
 
     console.log(scaler);
-    const wrapperStyles = scaler !== 1 ? {
-      transform: `translate(-50%) scale(${scaler})`,
-      left: '50%',
-    } : {};
+    let wrapperStyles;
+    if (scaler !== 1) {
+      wrapperStyles = {
+        transform: `translate(-50%) scale(${scaler})`,
+        left: `50%`,
+        marginTop: 80 - (gameHeight - (gameHeight * scaler)) / 2
+      };
+    };
 
     return (
       <>
