@@ -2,7 +2,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { blue, green, grey, red, yellow } from '@material-ui/core/colors';
 
 export default createMuiTheme({
-  spacing: (factor = 1) => `${0.25 * factor}em`,
+  typography: {
+    fontSize: 28,
+  },
   palette: {
     grey: {
       light: grey[200],

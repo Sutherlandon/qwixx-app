@@ -10,6 +10,8 @@ import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
+const gameWidth = 1000;
+const gameHeight = 694; // calculated after rendering and here for reference
 
 const styles = (theme) => ({
   cardTitleRow: {
@@ -28,17 +30,22 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     flexGrow: 1,
   },
+  disclaimer: {
+    textAlign: 'center',
+    margin: `${theme.spacing(2)} auto`,
+    fontSize: 14,
+  },
   fiveXTop: {
     border: '1px solid',
     borderBottom: 0,
-    borderTopLeftRadius: theme.spacing(3),
-    borderTopRightRadius: theme.spacing(3),
+    borderTopLeftRadius: theme.spacing(2),
+    borderTopRightRadius: theme.spacing(2),
     display: 'inline-block',
     float: 'right',
-    fontSize: '2vw',
-    marginRight: '0.15em',
+    fontSize: 14,
+    marginRight: theme.spacing(0.75),
     textAlign: 'center',
-    width: '15%',
+    width: 130,
   },
   fiveXBottom: {
     border: '1px solid',
@@ -47,21 +54,19 @@ const styles = (theme) => ({
     borderTop: 0,
     display: 'inline-block',
     float: 'right',
-    height: '0.25em',
+    height: theme.spacing(),
     marginBottom: theme.spacing(),
-    marginRight: '0.15em',
-    marginTop: '-0.25em',
-    width: '15%',
+    marginRight: theme.spacing(0.75),
+    marginTop: -theme.spacing(2),
+    width: 130,
   },
-  footer: {
-    textAlign: 'center',
-    fontSize: '1.5vw',
-    margin: `${theme.spacing(2)} auto`,
-  },
-  disclaimer: {
-    textAlign: 'center',
-    fontSize: '1vw',
-    margin: `${theme.spacing(2)} auto`,
+  gameWrapper: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    width: gameWidth,
+    margin: 'auto',
+    marginTop: 80,
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -70,16 +75,6 @@ const styles = (theme) => ({
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
     marginBottom: theme.spacing(),
-
-    [theme.breakpoints.up('sm')]: {
-      fontSize: '2.5vw',
-    },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '3vw',
-    },
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '4vw',
-    },
   },
 });
 
@@ -118,6 +113,8 @@ const blankState = {
 
 class QuixxScoreCard extends Component {
   state = cloneDeep(blankState);
+  startingGameWidth = gameWidth;
+  startingGameHeight = gameHeight;
 
   componentDidMount() {
     // if there is a saved state, reload it
@@ -133,8 +130,8 @@ class QuixxScoreCard extends Component {
       localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
     });
 
-    // Rescale the card to fit on the screen on orientation change
-    window.addEventListener('orientationchange', () => {
+    // Rescale the card to fit on the screen if the size of the screen changes
+    window.addEventListener('resize', () => {
       this.setState({ scaler: this.getScaler() });
     });
 
@@ -148,13 +145,24 @@ class QuixxScoreCard extends Component {
    * unless the height < width, then we scale based on the height of the screen
    */
   getScaler = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const gameHeight = document.getElementById('game-wrapper').clientHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    //const gameHeight = document.getElementById('game-wrapper').clientHeight;
+    const gameHeight = this.startingGameHeight;
 
+    // scaler starts at 1 which means no scaling needed
     let scaler = 1;
-    if (height < width) {
-      scaler = window.innerHeight / gameHeight * 0.95;
+
+    // do we even need to scale?
+    if (windowHeight < gameHeight || windowWidth < gameWidth) {
+      const scalerH = windowHeight / gameHeight;
+      const scalerW = windowWidth / gameWidth;
+
+      // take the smaller scaler because that one is more important
+      scaler = scalerH < scalerW ? scalerH : scalerW
+
+      // shrink just a little to add some padding around the edges
+      scaler = scaler * 0.98;
     }
 
     return scaler;
@@ -278,10 +286,23 @@ class QuixxScoreCard extends Component {
       yellowScore = 0,
     } = this.state;
 
+    let wrapperStyles;
+    if (scaler !== 1) {
+      wrapperStyles = {
+        transform: `translate(-50%) scale(${scaler})`,
+        left: `50%`,
+        marginTop: 80 - (gameHeight - (gameHeight * scaler)) / 2
+      };
+    };
+
     return (
       <>
         <AppBar onReset={this.handleReset} />
-        <div id='game-wrapper' className={classes.gameWrapper} style={{ transform: `scale(${scaler})`}}>
+        <div 
+          id='game-wrapper'
+          className={classes.gameWrapper}
+          style={wrapperStyles}
+        >
           <DiceRow 
             disabledDice={disabledDice}
             toggleDisabled={this.toggleDisabled}
@@ -314,10 +335,10 @@ class QuixxScoreCard extends Component {
               revealScore={(score) => this.setState({ [score]: !this.state[score] })}
             />
           </Paper>
-        </div>
-        <div className={classes.disclaimer}>
-          QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
-          This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+          <div className={classes.disclaimer}>
+            QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
+            This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+          </div>
         </div>
       </>
     );

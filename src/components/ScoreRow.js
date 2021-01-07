@@ -8,12 +8,11 @@ const useStyles = makeStyles((theme) => {
   return ({
     block: {
       backgroundColor: 'white',
-      border: `0.05em solid ${grey.dark}`,
+      border: `2px solid ${grey.dark}`,
       borderRadius: theme.spacing(2),
       cursor: 'pointer',
       flexGrow: 1,
       flexShrink: 0,
-      fontSize: '3vw',
       padding: theme.spacing(1),
       textAlign: 'center',
       width: '12%'
@@ -45,15 +44,14 @@ const useStyles = makeStyles((theme) => {
       color: 'black',
     },
     mathSymbol: {
-      fontSize: '3vw',
       textAlign: 'center',
       width: '4%'
     },
     totals: {
+      fontSize: 22,
       padding: theme.spacing(),
       paddingLeft: 0,
       width: '7.5%',
-      fontSize: '2vw',
     },
   });
 });
