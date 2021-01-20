@@ -118,15 +118,16 @@ class QuixxScoreCard extends Component {
 
   componentDidMount() {
     // if there is a saved state, reload it
-    let savedState = localStorage.getItem('QwixxAppState2');
+    let savedState = localStorage.getItem('QwixxAppState');
     if (savedState) {
       savedState = JSON.parse(savedState);
-      localStorage.removeItem('QwixxAppState2');
+      localStorage.removeItem('QwixxAppState');
       this.setState(savedState);
     }
 
     // save the state if the user navagates away or refreshes
     window.addEventListener('pagehide', () => {
+      console.log('saving state');
       localStorage.setItem('QwixxAppState', JSON.stringify(this.state));
     });
 
@@ -274,7 +275,7 @@ class QuixxScoreCard extends Component {
       disabledDice,
       greenScore = 0,
       redScore = 0,
-      scaler,
+      scaler = 1,
       showBlue,
       showFinal,
       showGreen,
