@@ -9,12 +9,12 @@ or on an airplane.  To support that goal, this app scales to any size screen gra
 is a Progressive Web App so you can "install" it on your device to have offline access to it
 everywhere.  
 
-Originally I had not intended to enforce the rules do to family house rules that I didn't
+Originally I had not intended to enforce the rules due to family house rules that I didn't
 want to disregard.  However after play tests with people, the feedback I got several times
 was they wished the rules were enforced more.  So I implemented some mechanisms to enforce
 the rules, but I would like to add a toggle later down the line.  There is a link to the 
 game rules included in the app so users can go read up on how to play.
 
-Check it out a [sutherlandon.com/qwixx-app](https://sutherlandon.com/qwixx-app)
+Check it out a [qwixx.sutherlandon.com](https://qwixx.sutherlandon.com)
 
-![QWIXX App Screenshot](https://sutherlandon.com/static/media/qwixx-app.c2642bbc.jpg)
+![QWIXX App Screenshot](./qwixx-app-showcase.jpg)
