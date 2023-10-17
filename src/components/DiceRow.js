@@ -10,7 +10,6 @@ const diceFaces = [One, Two, Three, Four, Five, Six];
 
 const styles = (theme) => ({
   paper: {
-    marginBottom: theme.spacing(2),
     marginLeft: 'auto',
     marginRight: 'auto',
     padding: `${theme.spacing(1)}px ${theme.spacing(1.5)}px`,

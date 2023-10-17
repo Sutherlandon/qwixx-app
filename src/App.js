@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import cloneDeep from 'lodash.clonedeep';
-import { Paper } from '@material-ui/core';
+import { Button, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt, faRedo } from '@fortawesome/free-solid-svg-icons';
 
-import AppBar from './components/AppBar';
 import ColorRows from './components/ColorRows';
 import DiceRow from './components/DiceRow';
 import ScoreRow from './components/ScoreRow';
 import StrikesRow from './components/StrikesRow';
+import rules from './QwixxTM-RULES.pdf';
 
 const scoring = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 const gameWidth = 1000;
 const gameHeight = 694; // calculated after rendering and here for reference
 
 const styles = (theme) => ({
+  buttonRow: {
+    margin: 'auto',
+    width: 'fit-content',
+  },
   cardTitleRow: {
     display: 'flex',
     alignItems: 'flex-end',
@@ -66,7 +72,9 @@ const styles = (theme) => ({
     right: 0,
     width: gameWidth,
     margin: 'auto',
-    marginTop: 80,
+  },
+  leftIcon: {
+    marginRight: theme.spacing(2),
   },
   paper: {
     backgroundColor: theme.palette.grey.light,
@@ -75,6 +83,20 @@ const styles = (theme) => ({
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
     marginBottom: theme.spacing(),
+  },
+  rules: {
+    fontSize: '18px',
+    margin: 'auto',
+    paddingTop: 8,
+    width: 'fit-content',
+  },
+  reset: {
+    backgroundColor: theme.palette.red.main,
+    color: 'white',
+    fontSize: 18,
+    '&:hover': {
+      color: theme.palette.red.main,
+    },
   },
 });
 
@@ -96,10 +118,10 @@ const blankState = {
     [false, false, false, false, false, false, false, false, false, false, true, true]
   ],
   redScore: 0,
-  showBlue: false, 
+  showBlue: false,
   showFinal: false,
-  showGreen: false, 
-  showRed: false, 
+  showGreen: false,
+  showRed: false,
   showStrikes: false,
   showYellow: false,
   strikes: new Array(4).fill(false),
@@ -262,7 +284,7 @@ class QuixxScoreCard extends Component {
       });
     }
 
-    this.setState({ 
+    this.setState({
       disabledDice,
       [color]: [marks, disabled],
     });
@@ -292,22 +314,43 @@ class QuixxScoreCard extends Component {
       wrapperStyles = {
         transform: `translate(-50%) scale(${scaler})`,
         left: `50%`,
-        marginTop: 80 - (gameHeight - (gameHeight * scaler)) / 2
+        marginTop: 1 - (gameHeight - (gameHeight * scaler)) / 2
       };
     };
 
     return (
       <>
-        <AppBar onReset={this.handleReset} />
-        <div 
+        <div
           id='game-wrapper'
           className={classes.gameWrapper}
           style={wrapperStyles}
         >
-          <DiceRow 
-            disabledDice={disabledDice}
-            toggleDisabled={this.toggleDisabled}
-          />
+          <div className={classes.rules}>
+            <a href={rules}>Rules of Play</a> <FontAwesomeIcon icon={faExternalLinkAlt} />
+          </div>
+          <Grid
+            container
+            spacing={4}
+            alignItems='center'
+            className={classes.buttonRow}
+          >
+            <Grid item>
+              <DiceRow
+                disabledDice={disabledDice}
+                toggleDisabled={this.toggleDisabled}
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                className={classes.reset}
+                variant='contained'
+                onClick={this.handleReset}
+              >
+                <FontAwesomeIcon icon={faRedo} className={classes.leftIcon} />
+                Reset
+              </Button>
+            </Grid>
+          </Grid>
           <Paper className={classes.paper}>
             <div className={classes.cardTitleRow}>
               <div className={classes.cardTitle}>QWIXX</div>
@@ -338,7 +381,7 @@ class QuixxScoreCard extends Component {
           </Paper>
           <div className={classes.disclaimer}>
             QWIXX is a trademark of <a href='https://gamewright.com'>Gamewright</a>, a division of Ceaco, Inc.
-            This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>
+            This app has been created as a passion project by <a href='https://sutherlandon.com'>Sutherlandon</a>.
           </div>
         </div>
       </>

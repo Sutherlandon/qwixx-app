@@ -55,9 +55,9 @@ function StrikesRow(props) {
   const classes = useStyles();
 
   return (
-    <Grid container justify='space-between' alignItems='center' wrap='nowrap' className={classes.row}>
+    <Grid container justifyContent='space-between' alignItems='center' wrap='nowrap' className={classes.row}>
       <Grid item className={classes.scoreContainer}>
-        <Grid container spacing={1} justify='space-between' wrap='nowrap'>
+        <Grid container spacing={1} justifyContent='space-between' wrap='nowrap'>
           <Grid item >
             <div className={classes.score}>
               <div className={classes.scoreTop} style={{ fontWeight: 'bold' }}>X</div>
@@ -80,7 +80,7 @@ function StrikesRow(props) {
         <div className={classes.strikesLabel}>
           <span className={classes.strikesLabelX}>X</span> = -5
         </div>
-        <Grid container spacing={1} justify='space-around' alignItems='center' wrap='nowrap'>
+        <Grid container spacing={1} justifyContent='space-around' alignItems='center' wrap='nowrap'>
           {strikes.map((strike, i) => (
             <Grid item
               key={i}

@@ -77,7 +77,7 @@ function ScoreRow(props) {
   const totalScore = redScore + yellowScore + greenScore + blueScore - strikesScore;
 
   return (
-    <Grid container justify='space-between' alignItems='center'>
+    <Grid container justifyContent='space-between' alignItems='center'>
       <Grid item className={classes.totals}>
         Totals
       </Grid>

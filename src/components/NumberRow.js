@@ -67,7 +67,7 @@ function FreeSection({ color, onClick, reverse, row }) {
 
   return (
     <div className={classes.row}>
-      <Grid container justify='space-around'>
+      <Grid container justifyContent='space-around'>
         {marks.map((selected, i) => {
 
           if (i < 10) {
@@ -104,7 +104,7 @@ function LockSection({ color, onClick, reverse, row }) {
 
   return (
     <div className={classes.row}>
-      <Grid container justify='space-around'>
+      <Grid container justifyContent='space-around'>
         {marks.map((selected, i) => {
           const isLock = i + 1 === marks.length;
 
