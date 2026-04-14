@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { Analytics } from '@vercel/analytics/react';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -13,6 +14,7 @@ ReactDOM.render(
   <ThemeProvider theme={Theme}>
     <CssBaseline />
     <App />
+    <Analytics />
   </ThemeProvider>
 , document.getElementById('root'));
 
